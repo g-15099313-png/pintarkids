@@ -1,673 +1,576 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PintarKids - Portal Pelancar Murid</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #faf5ff 100%);
-            min-height: 100vh;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-        .logo-box {
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
-        }
-        .app-card:hover .logo-box {
-            transform: scale(1.05);
-            transition: transform 0.2s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PintarKids Launcher - Portal Pelancar Murid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: linear-gradient(135deg, #f0f7ff 0%, #e0eefd 100%); min-height: 100vh; color: #1e293b; padding-bottom: 40px; }
+    
+    /* Header */
+    header { background: #ffffff; padding: 16px 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo { width: 42px; height: 42px; background: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: bold; }
+    .brand-title { font-size: 20px; font-weight: 800; color: #1e3a8a; }
+    .brand-subtitle { font-size: 12px; color: #64748b; font-weight: 600; }
+    
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .user-badge { display: flex; align-items: center; gap: 10px; background: #eff6ff; border: 1px solid #bfdbfe; padding: 6px 14px; border-radius: 30px; }
+    .user-avatar-mini { width: 28px; height: 28px; border-radius: 50%; background: #3b82f6; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    .user-name-mini { font-size: 14px; font-weight: 700; color: #1e40af; }
+    
+    .btn { padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-danger { background: #ef4444; color: white; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-secondary { background: #f1f5f9; color: #475569; }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    /* Main Container */
+    .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+    /* Profile Selection Screen */
+    .welcome-banner { text-align: center; margin-bottom: 35px; }
+    .welcome-title { font-size: 30px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .welcome-sub { font-size: 16px; color: #64748b; }
+
+    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; justify-content: center; }
+    .profile-card { background: white; border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.25s ease; border: 2px solid transparent; }
+    .profile-card:hover { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
+    .avatar-circle { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 800; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    .profile-name { font-size: 18px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
+    .profile-email-tag { font-size: 11px; background: #f1f5f9; color: #64748b; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+
+    /* Dashboard Screen */
+    .dashboard-header { background: white; border-radius: 20px; padding: 24px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .delima-box { background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px 20px; border-radius: 14px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+    .delima-info { display: flex; flex-direction: column; }
+    .delima-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #15803d; letter-spacing: 0.5px; }
+    .delima-email { font-size: 15px; font-weight: 700; color: #166534; word-break: break-all; }
+
+    .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+    .app-card { background: white; border-radius: 18px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #f1f5f9; }
+    .app-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+    .app-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .app-icon-wrapper { width: 52px; height: 52px; border-radius: 14px; background: #f8fafc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
+    .app-icon-wrapper svg { width: 34px; height: 34px; }
+    .app-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+    .app-category { font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; }
+    .app-desc { font-size: 12px; color: #64748b; line-height: 1.4; margin-bottom: 18px; }
+    .app-btn { width: 100%; padding: 10px; background: #0f172a; color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 13px; transition: background 0.2s; display: block; }
+    .app-btn:hover { background: #2563eb; }
+
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: white; width: 100%; max-width: 440px; border-radius: 24px; padding: 28px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; animation: popIn 0.2s ease-out; }
+    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .modal-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { font-size: 12px; font-weight: 800; color: #334155; display: block; margin-bottom: 6px; text-transform: uppercase; }
+    .form-input { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: #2563eb; }
+
+    .pin-display { font-size: 32px; font-weight: 800; letter-spacing: 12px; text-align: center; margin: 15px 0; color: #1e3a8a; }
+    .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+    .num-btn { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 12px; font-size: 20px; font-weight: 800; color: #1e293b; cursor: pointer; transition: all 0.15s; }
+    .num-btn:active { background: #e2e8f0; transform: scale(0.95); }
+
+    .student-manage-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8fafc; border-radius: 12px; margin-bottom: 8px; }
+  </style>
 </head>
-<body class="text-slate-800 pb-12 antialiased">
+<body>
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-200/60 shadow-sm mb-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-md shadow-indigo-200">
-                    <i class="fa-solid font-bold fa-rocket"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                        PintarKids
-                    </h1>
-                    <p class="text-xs font-semibold text-slate-500 hidden sm:block">Portal Pelancar Murid Sekolah</p>
-                </div>
-            </div>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">🚀</div>
+      <div>
+        <div class="brand-title">PintarKids</div>
+        <div class="brand-subtitle">Portal Pelancar Murid Sekolah</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div id="activeUserBadge" class="user-badge" style="display: none;">
+        <div id="activeAvatar" class="user-avatar-mini">A</div>
+        <span id="activeUserName" class="user-name-mini">Nama Murid</span>
+        <button onclick="logoutStudent()" class="btn btn-danger" style="padding: 4px 10px; font-size: 12px; border-radius: 20px;">🚪 Log Keluar</button>
+      </div>
+      <button onclick="openParentModal()" class="btn btn-secondary">⚙️ Mod Ibu Bapa / Guru</button>
+    </div>
+  </header>
 
-            <!-- Active Student Quick Profile & Mode Toggle -->
-            <div class="flex items-center gap-3">
-                <!-- Selected Profile Display -->
-                <div id="activeProfileHeader" class="hidden sm:flex items-center gap-2 bg-indigo-50/80 border border-indigo-100 rounded-full py-1.5 px-3">
-                    <div id="headerAvatar" class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
-                        M
-                    </div>
-                    <span id="headerStudentName" class="text-sm font-bold text-indigo-900 max-w-[120px] truncate">Pilih Murid</span>
-                </div>
-
-                <!-- Admin / Parent Button -->
-                <button onclick="openParentModal()" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 rounded-xl shadow-sm transition duration-200">
-                    <i class="fa-solid fa-user-gear text-amber-400"></i>
-                    <span>Mod Ibu Bapa / Guru</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-
-        <!-- STUDENT PROFILE SWITCHER & DELIMA QUICK ACCESS BANNER -->
-        <section class="glass-card rounded-3xl p-5 sm:p-6 shadow-xl shadow-slate-200/50 border border-white">
-            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-                
-                <!-- Left: Student Selector -->
-                <div class="w-full md:w-auto flex-1">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
-                            <i class="fa-solid fa-users text-sm"></i> Profil Murid Aktif
-                        </h2>
-                        <button onclick="openParentModal()" class="text-xs text-indigo-600 hover:underline font-semibold sm:hidden">
-                            + Urus Murid
-                        </button>
-                    </div>
-
-                    <!-- Horizontal Student Pills -->
-                    <div id="studentPillsList" class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-                        <!-- Rendered dynamically by JS -->
-                    </div>
-                </div>
-
-                <!-- Right: Active Student DELIMa Email Box -->
-                <div class="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-4 text-white shadow-lg shadow-indigo-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div class="space-y-0.5">
-                        <div class="text-xs text-indigo-200 font-medium flex items-center gap-1.5">
-                            <i class="fa-solid fa-id-card"></i> Akaun Google DELIMa Murid:
-                        </div>
-                        <div id="activeDelimaEmail" class="font-mono text-sm sm:text-base font-bold tracking-tight text-yellow-300 select-all">
-                            Sila pilih murid dahulu
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <!-- Copy Button -->
-                        <button onclick="copyDelimaEmail()" title="Salin E-mel" class="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>Salin E-mel</span>
-                        </button>
-
-                        <!-- Direct Google Login Link -->
-                        <button onclick="launchGoogleLogin()" title="Log Masuk Google" class="flex-1 sm:flex-none bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition">
-                            <i class="fa-brands fa-google text-slate-900"></i>
-                            <span>Log Masuk</span>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- SEARCH & FILTER BAR -->
-        <section class="space-y-4">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
-                        <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm">
-                            <i class="fa-solid fa-compass"></i>
-                        </span>
-                        Portal & Aplikasi Pembelajaran
-                    </h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Klik pada butang untuk terus membuka aplikasi rasmi.</p>
-                </div>
-
-                <!-- Search Input -->
-                <div class="relative w-full sm:w-72">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="filterApps()" placeholder="Cari nama aplikasi..." 
-                        class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-medium placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition">
-                </div>
-            </div>
-
-            <!-- Category Filter Pills -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold">
-                <button onclick="setCategory('all')" id="cat-all" class="cat-btn px-4 py-2 rounded-xl bg-indigo-600 text-white shadow-sm transition">Semua Aplikasi</button>
-                <button onclick="setCategory('rasmi')" id="cat-rasmi" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Portal Rasmi KPM</button>
-                <button onclick="setCategory('tugasan')" id="cat-tugasan" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Bilik Darjah & Tugasan</button>
-                <button onclick="setCategory('interaktif')" id="cat-interaktif" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Kuiz & Permainan</button>
-                <button onclick="setCategory('kreatif')" id="cat-kreatif" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Kreativiti & Coding</button>
-            </div>
-        </section>
-
-        <!-- APP GRID CONTAINER -->
-        <section id="appGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <!-- App Cards will be rendered dynamically by JS -->
-        </section>
-
-        <!-- EMPTY SEARCH STATE -->
-        <div id="noResults" class="hidden text-center py-12 bg-white/60 rounded-3xl border border-dashed border-slate-300">
-            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-700">Aplikasi tidak dijumpai</h3>
-            <p class="text-slate-500 text-xs mt-1">Cuba cari dengan kata kunci yang lain.</p>
-        </div>
-
-    </main>
-
-    <!-- MODAL: PARENT / TEACHER ADMIN DASHBOARD -->
-    <div id="parentModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 transition-all">
-            
-            <!-- Modal Header -->
-            <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-amber-400 text-slate-900 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Mod Ibu Bapa / Guru</h3>
-                        <p class="text-xs text-slate-400">Pengurusan Profil & Akaun DELIMa Murid</p>
-                    </div>
-                </div>
-                <button onclick="closeParentModal()" class="text-slate-400 hover:text-white p-1">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Modal Content Body -->
-            <div class="p-6 space-y-6">
-
-                <!-- STEP 1: PIN LOCK SCREEN -->
-                <div id="pinLockSection" class="space-y-4 text-center py-4">
-                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-xl">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-lg">Masukkan PIN Kawalan Ibu Bapa</h4>
-                        <p class="text-slate-500 text-xs mt-1">Sila masukkan PIN 4-digit (PIN lalai: <span class="font-mono font-bold text-indigo-600">1234</span>)</p>
-                    </div>
-
-                    <div class="flex justify-center gap-2 my-4">
-                        <input type="password" id="pinInput" maxlength="4" placeholder="••••" autocomplete="off"
-                            class="w-36 text-center text-2xl tracking-[0.5em] font-mono py-2 border-2 border-slate-200 rounded-2xl focus:border-indigo-600 focus:outline-none">
-                    </div>
-
-                    <p id="pinErrorMsg" class="text-xs font-semibold text-rose-500 hidden">
-                        <i class="fa-solid fa-triangle-exclamation"></i> PIN tidak sah. Sila cuba lagi.
-                    </p>
-
-                    <button onclick="verifyPin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl transition shadow-md shadow-indigo-200">
-                        Sahkan PIN
-                    </button>
-                </div>
-
-                <!-- STEP 2: ADMIN PANEL (Unlocked) -->
-                <div id="adminPanelSection" class="hidden space-y-6">
-                    
-                    <!-- Top Action Bar -->
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 py-1 px-2.5 rounded-full flex items-center gap-1">
-                            <i class="fa-solid fa-circle-check"></i> Akses Dibenarkan
-                        </span>
-                        <button onclick="lockParentMode()" class="text-xs font-bold text-slate-500 hover:text-rose-600">
-                            <i class="fa-solid fa-lock"></i> Kunci Semula
-                        </button>
-                    </div>
-
-                    <!-- Student List Management -->
-                    <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Senarai Murid Berdaftar</h4>
-                        <div id="adminStudentList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                            <!-- Rendered dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Add New Student Form -->
-                    <form id="addStudentForm" onsubmit="handleAddStudent(event)" class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
-                        <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wider">+ Tambah Murid Baharu</h5>
-                        
-                        <div>
-                            <label class="text-xs font-semibold text-slate-600 block mb-1">Nama Penuh / Nama Panggilan</label>
-                            <input type="text" id="newStudentName" required placeholder="Contoh: Aiman Hakim" 
-                                class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-semibold text-slate-600 block mb-1">E-mel DELIMa KPM (@moe-dl.edu.my)</label>
-                            <input type="email" id="newStudentEmail" required placeholder="m-12345678@moe-dl.edu.my" 
-                                class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
-                            Simpan Profil Murid
-                        </button>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
+  <div class="container">
+    
+    <!-- Skrin 1: Pilih Profil Murid -->
+    <div id="profileSelectionView">
+      <div class="welcome-banner">
+        <h1 class="welcome-title">Selamat Datang, Adik! 👋</h1>
+        <p class="welcome-sub">Pilih nama dan gambar anda di bawah untuk mula belajar</p>
+      </div>
+      <div id="profilesContainer" class="profiles-grid"></div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none">
-        <div id="toastIcon" class="text-emerald-400 text-lg">
-            <i class="fa-solid fa-circle-check"></i>
+    <!-- Skrin 2: Dashboard Pembelajaran -->
+    <div id="studentDashboardView" style="display: none;">
+      <div class="dashboard-header">
+        <div>
+          <h2 id="dashGreeting" style="font-size: 24px; font-weight: 800; color: #0f172a;">Selamat Belajar!</h2>
+          <p style="font-size: 14px; color: #64748b;">Pilih mana-mana aplikasi pembelajaran untuk bermula</p>
         </div>
-        <span id="toastMessage" class="text-xs font-bold">Mesej Notifikasi</span>
+
+        <div class="delima-box">
+          <div class="delima-info">
+            <span class="delima-label">E-mel DELIMa Anda:</span>
+            <span id="dashDelimaEmail" class="delima-email">murid@moe-dl.edu.my</span>
+          </div>
+          <button onclick="copyDelimaEmail()" class="btn btn-secondary" style="font-size: 12px;">📋 Salin E-mel</button>
+          <a id="delimaLoginBtn" href="https://accounts.google.com/AccountChooser?continue=https://classroom.google.com" target="_blank" class="btn btn-primary" style="font-size: 12px; text-decoration: none;">🚀 Log Masuk Google DELIMa</a>
+        </div>
+      </div>
+
+      <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px; color: #1e293b;">Portal & Aplikasi Pembelajaran</h3>
+      
+      <!-- Grid Aplikasi Dengan SVG Rasmi Inline -->
+      <div class="apps-grid">
+        
+        <!-- DELIMa KPM -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 100 100">
+                  <rect width="100" height="100" rx="20" fill="#002B7F"/>
+                  <rect y="33.3" width="100" height="33.3" fill="#RED" fill="#CC0000"/>
+                  <rect y="66.6" width="100" height="33.3" fill="#FFFFFF"/>
+                  <polygon points="0,0 50,50 0,100" fill="#002B7F"/>
+                  <path d="M 15 50 A 12 12 0 1 0 32 50 Z" fill="#FFD700"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Portal DELIMa</div>
+                <div class="app-category">KPM MALAYSIA</div>
+              </div>
+            </div>
+            <p class="app-desc">Akses laman rasmi Digital Educational Learning Initiative Malaysia.</p>
+          </div>
+          <a href="https://delima.moe-dl.edu.my/" target="_blank" class="app-btn">Buka Portal ↗</a>
+        </div>
+
+        <!-- Google Classroom -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 87.3 78">
+                  <path fill="#0F9D58" d="M6.6 0h74.1c3.6 0 6.6 3 6.6 6.6v64.8c0 3.6-3 6.6-6.6 6.6H6.6C3 78 0 75 0 71.4V6.6C0 3 3 0 6.6 0z"/>
+                  <path fill="#FFC107" d="M5.2 5.2h76.9v67.6H5.2z"/>
+                  <path fill="#0F9D58" d="M10.4 10.4h66.5v57.2H10.4z"/>
+                  <circle fill="#FFF" cx="43.7" cy="30" r="8"/>
+                  <path fill="#FFF" d="M30 48c0-6 8-9 13.7-9s13.7 3 13.7 9v3H30v-3z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Google Classroom</div>
+                <div class="app-category">TUGASAN SEKOLAH</div>
+              </div>
+            </div>
+            <p class="app-desc">Hantar kerja sekolah, lihat nota, dan berinteraksi dengan guru.</p>
+          </div>
+          <a href="https://classroom.google.com" target="_blank" class="app-btn">Buka Classroom ↗</a>
+        </div>
+
+        <!-- YouTube Kids -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 68 48">
+                  <path fill="#FF0000" d="M66.5 7.6c-.8-2.9-3-5.2-5.8-6C55.6 0 34 0 34 0S12.4 0 7.3 1.6A8.4 8.4 0 0 0 1.5 7.6C0 12.8 0 24 0 24s0 11.2 1.5 16.4c.8 2.9 3 5.2 5.8 6C12.4 48 34 48 34 48s21.6 0 26.7-1.6c2.9-.8 5.1-3 5.8-6C68 35.2 68 24 68 24s0-11.2-1.5-16.4z"/>
+                  <path fill="#FFF" d="M27 34l18-10-18-10v20z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">YouTube Kids</div>
+                <div class="app-category">VIDEO SELAMAT</div>
+              </div>
+            </div>
+            <p class="app-desc">Tonton video pendidikan dan kartun yang selamat untuk kanak-kanak.</p>
+          </div>
+          <a href="https://www.youtubekids.com" target="_blank" class="app-btn">Buka YouTube Kids ↗</a>
+        </div>
+
+        <!-- Scratch Coding -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 100 100">
+                  <rect width="100" height="100" rx="20" fill="#FFAB19"/>
+                  <path fill="#FFF" d="M50 20 C 30 20 20 35 20 55 C 20 75 35 80 50 80 C 65 80 80 75 80 55 C 80 35 70 20 50 20 Z"/>
+                  <circle cx="38" cy="45" r="6" fill="#4D97FF"/>
+                  <circle cx="62" cy="45" r="6" fill="#4D97FF"/>
+                  <polygon points="50,52 44,60 56,60" fill="#FF6680"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Scratch Coding</div>
+                <div class="app-category">PENGATURCARAAN</div>
+              </div>
+            </div>
+            <p class="app-desc">Belajar membina permainan dan animasi mudah secara interaktif.</p>
+          </div>
+          <a href="https://scratch.mit.edu" target="_blank" class="app-btn">Buka Scratch ↗</a>
+        </div>
+
+        <!-- Google Drive -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 87.3 78">
+                  <path fill="#0066DA" d="M6 73.5l22.5-39h58.8l-22.5 39z"/>
+                  <path fill="#00AC47" d="M28.5 34.5L58.2 0H87.3L57.6 34.5z"/>
+                  <path fill="#EA4335" d="M0 73.5l28.5-49.2 14.7 25.5L14.7 73.5z"/>
+                  <path fill="#FFBA00" d="M28.5 34.5h58.8L72.6 59.7H13.8z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Google Drive</div>
+                <div class="app-category">DOKUMEN & FAIL</div>
+              </div>
+            </div>
+            <p class="app-desc">Simpan dan semak lembaran kerja serta dokumen sekolah.</p>
+          </div>
+          <a href="https://drive.google.com" target="_blank" class="app-btn">Buka Drive ↗</a>
+        </div>
+
+        <!-- Canva Design -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="50" fill="#00C4CC"/>
+                  <path fill="#FFF" d="M50 22c-15.5 0-28 12.5-28 28s12.5 28 28 28 28-12.5 28-28-12.5-28-28-28zm-4 38c-6.6 0-12-5.4-12-12s5.4-12 12-12 12 5.4 12 12-5.4 12-12 12z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Canva Design</div>
+                <div class="app-category">REKA BENTUK</div>
+              </div>
+            </div>
+            <p class="app-desc">Cipta poster, lukisan, dan persembahan kreatif dengan mudah.</p>
+          </div>
+          <a href="https://www.canva.com" target="_blank" class="app-btn">Buka Canva ↗</a>
+        </div>
+
+        <!-- Quizizz -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 100 100">
+                  <rect width="100" height="100" rx="20" fill="#8854C0"/>
+                  <path fill="#FFF" d="M50 20 C 33.4 20 20 33.4 20 50 C 20 66.6 33.4 80 50 80 C 58 80 65 77 70.7 72 L 78 78 L 80 70 L 72 65 C 77 59 80 51 80 50 C 80 33.4 66.6 20 50 20 Z M 50 68 C 40 68 32 60 32 50 C 32 40 40 32 50 32 C 60 32 68 40 68 50 C 68 60 60 68 50 68 Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Quizizz</div>
+                <div class="app-category">KUIZ INTERAKTIF</div>
+              </div>
+            </div>
+            <p class="app-desc">Jawab kuiz berasaskan permainan dan cabaran pembelajaran.</p>
+          </div>
+          <a href="https://quizizz.com" target="_blank" class="app-btn">Buka Quizizz ↗</a>
+        </div>
+
+        <!-- Wordwall -->
+        <div class="app-card">
+          <div>
+            <div class="app-top">
+              <div class="app-icon-wrapper">
+                <svg viewBox="0 0 100 100">
+                  <rect width="100" height="100" rx="20" fill="#0088CC"/>
+                  <rect x="20" y="20" width="28" height="28" rx="6" fill="#FFF"/>
+                  <rect x="52" y="20" width="28" height="28" rx="6" fill="#FFC107"/>
+                  <rect x="20" y="52" width="28" height="28" rx="6" fill="#4CAF50"/>
+                  <rect x="52" y="52" width="28" height="28" rx="6" fill="#FF5722"/>
+                </svg>
+              </div>
+              <div>
+                <div class="app-title">Wordwall</div>
+                <div class="app-category">PERMAINAN ILMU</div>
+              </div>
+            </div>
+            <p class="app-desc">Permainan padanan kata, roda saksama, dan latihan bergambar.</p>
+          </div>
+          <a href="https://wordwall.net" target="_blank" class="app-btn">Buka Wordwall ↗</a>
+        </div>
+
+      </div>
     </div>
 
-    <script>
-        /* OFFICIAL LOGO URLS & APP DATA DEFINITION */
-        const APPS_DATA = [
-            {
-                id: 'delima',
-                name: 'Portal DELIMa KPM',
-                category: 'rasmi',
-                desc: 'Akses Portal Digital Educational Learning Initiative Malaysia rasmi.',
-                url: 'https://delima.moe-dl.edu.my/',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Coat_of_arms_of_Malaysia.svg/300px-Coat_of_arms_of_Malaysia.svg.png',
-                bgColor: 'bg-blue-50',
-                badge: 'Portal Rasmi KPM'
-            },
-            {
-                id: 'classroom',
-                name: 'Google Classroom',
-                category: 'tugasan',
-                desc: 'Tugasan sekolah, nota pembelajaran, dan bilik darjah dalam talian.',
-                url: 'https://classroom.google.com',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Google_Classroom_Logo.svg',
-                bgColor: 'bg-emerald-50',
-                badge: 'Tugasan Utama'
-            },
-            {
-                id: 'ytkids',
-                name: 'YouTube Kids',
-                category: 'interaktif',
-                desc: 'Video pendidikan terkurasi yang selamat dan menyeronokkan untuk murid.',
-                url: 'https://www.youtubekids.com',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/YouTube_Kids_Logo.svg',
-                bgColor: 'bg-red-50',
-                badge: 'Video Selamat'
-            },
-            {
-                id: 'scratch',
-                name: 'Scratch Coding',
-                category: 'kreatif',
-                desc: 'Belajar membina permainan interaktif dan animasi pergerakan mudah.',
-                url: 'https://scratch.mit.edu/projects/editor/',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Scratch_cat.svg',
-                bgColor: 'bg-amber-50',
-                badge: 'Pengaturcaraan'
-            },
-            {
-                id: 'drive',
-                name: 'Google Drive',
-                category: 'tugasan',
-                desc: 'Simpan dan semak fail, lembaran kerja, serta dokumen pelajaran.',
-                url: 'https://drive.google.com',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg',
-                bgColor: 'bg-sky-50',
-                badge: 'Awan & Dokumen'
-            },
-            {
-                id: 'canva',
-                name: 'Canva Design',
-                category: 'kreatif',
-                desc: 'Cipta poster, lukisan grafik, peta minda, dan persembahan kreatif.',
-                url: 'https://www.canva.com',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg',
-                bgColor: 'bg-cyan-50',
-                badge: 'Reka Bentuk'
-            },
-            {
-                id: 'quizizz',
-                name: 'Quizizz Interactive',
-                category: 'interaktif',
-                desc: 'Latihan ulang kaji, kuiz bergambar, dan cabaran minda interaktif.',
-                url: 'https://quizizz.com/join',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Quizizz_Logo.svg',
-                bgColor: 'bg-purple-50',
-                badge: 'Kuiz Interaktif'
-            },
-            {
-                id: 'wordwall',
-                name: 'Wordwall Games',
-                category: 'interaktif',
-                desc: 'Permainan susun perkataan, roda padanan, dan kuiz bahasa sains.',
-                url: 'https://wordwall.net/ms',
-                logo: 'https://az779572.vo.msecnd.net/images/wordwall_logo_square.png',
-                bgColor: 'bg-indigo-50',
-                badge: 'Permainan Ilmu'
-            }
-        ];
+  </div>
 
-        /* DEFAULT INITIAL STATE */
-        const DEFAULT_STUDENTS = [
-            { id: '1', name: 'Aiman Hakim', email: 'm-10293847@moe-dl.edu.my', color: 'bg-indigo-600' },
-            { id: '2', name: 'Nur Alyaa', email: 'g-88372615@moe-dl.edu.my', color: 'bg-pink-600' }
-        ];
+  <!-- Modal PIN Murid -->
+  <div id="studentPinModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <h3 id="modalStudentName" class="modal-title">Selamat Datang!</h3>
+      <p class="modal-sub">Masukkan PIN 4-Angka Mudah Anda</p>
+      
+      <div id="pinDisplay" class="pin-display">••••</div>
+      
+      <div class="numpad">
+        <button class="num-btn" onclick="pressPin('1')">1</button>
+        <button class="num-btn" onclick="pressPin('2')">2</button>
+        <button class="num-btn" onclick="pressPin('3')">3</button>
+        <button class="num-btn" onclick="pressPin('4')">4</button>
+        <button class="num-btn" onclick="pressPin('5')">5</button>
+        <button class="num-btn" onclick="pressPin('6')">6</button>
+        <button class="num-btn" onclick="pressPin('7')">7</button>
+        <button class="num-btn" onclick="pressPin('8')">8</button>
+        <button class="num-btn" onclick="pressPin('9')">9</button>
+        <button class="num-btn" style="background: #fee2e2; color: #ef4444;" onclick="clearPin()">C</button>
+        <button class="num-btn" onclick="pressPin('0')">0</button>
+        <button class="num-btn" style="background: #dcfce7; color: #15803d;" onclick="submitPin()">OK</button>
+      </div>
+      
+      <button onclick="closeModal('studentPinModal')" class="btn btn-secondary" style="margin-top: 15px; width: 100%;">Batal</button>
+    </div>
+  </div>
 
-        let students = JSON.parse(localStorage.getItem('pk_students')) || DEFAULT_STUDENTS;
-        let activeStudentId = localStorage.getItem('pk_active_student_id') || students[0]?.id || '1';
-        let parentPin = localStorage.getItem('pk_parent_pin') || '1234';
-        let isParentUnlocked = false;
-        let currentCategory = 'all';
+  <!-- Modal Mod Ibu Bapa / Guru -->
+  <div id="parentModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 class="modal-title">Mod Guru / Ibu Bapa</h3>
+      <p class="modal-sub">Pengurusan Profil Murid Sekolah</p>
 
-        window.onload = function() {
-            saveStudentsToStorage();
-            renderStudentsPills();
-            renderActiveStudentInfo();
-            renderAppGrid();
-        };
+      <div id="parentAuthSection">
+        <div class="form-group">
+          <label>Masukkan PIN Pentadbir (Lalai: 1234):</label>
+          <input type="password" id="parentPinInput" class="form-input" placeholder="••••" maxlength="4">
+        </div>
+        <button onclick="verifyParentPin()" class="btn btn-primary" style="width: 100%;">Log Masuk Pentadbir</button>
+      </div>
 
-        function saveStudentsToStorage() {
-            localStorage.setItem('pk_students', JSON.stringify(students));
-            localStorage.setItem('pk_active_student_id', activeStudentId);
-        }
+      <div id="parentControlSection" style="display: none;">
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Tambah Profil Murid Baharu</h4>
+        <div class="form-group">
+          <label>Nama Murid:</label>
+          <input type="text" id="newStudentName" class="form-input" placeholder="Contoh: Aiman Hakim">
+        </div>
+        <div class="form-group">
+          <label>E-mel DELIMa KPM (`@moe-dl.edu.my`):</label>
+          <input type="email" id="newStudentEmail" class="form-input" placeholder="m-12345678@moe-dl.edu.my">
+        </div>
+        <div class="form-group">
+          <label>PIN 4-Angka Murid:</label>
+          <input type="password" id="newStudentPin" class="form-input" placeholder="1234" maxlength="4">
+        </div>
+        <button onclick="addNewStudent()" class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">+ Simpan Profil Murid</button>
 
-        /* PROFILE SWITCHING & RENDERING */
-        function selectStudent(id) {
-            activeStudentId = id;
-            saveStudentsToStorage();
-            renderStudentsPills();
-            renderActiveStudentInfo();
-            showToast('Profil ditukar ke ' + getActiveStudent().name, 'fa-user-check');
-        }
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Senarai Murid Berdaftar</h4>
+        <div id="studentManageList"></div>
+      </div>
 
-        function getActiveStudent() {
-            return students.find(s => s.id === activeStudentId) || students[0] || { name: 'Tiada Murid', email: 'sila_tambah_murid' };
-        }
+      <button onclick="closeModal('parentModal')" class="btn btn-secondary" style="margin-top: 15px; width: 100%;">Tutup</button>
+    </div>
+  </div>
 
-        function renderStudentsPills() {
-            const container = document.getElementById('studentPillsList');
-            container.innerHTML = '';
+  <script>
+    // Data lalai murid
+    const defaultStudents = [
+      { id: 1, name: 'Aiman Hakim', email: 'm-10293847@moe-dl.edu.my', pin: '1234', color: '#3b82f6' },
+      { id: 2, name: 'Nur Aina', email: 'm-56473829@moe-dl.edu.my', pin: '5678', color: '#ec4899' },
+      { id: 3, name: 'Adam Haris', email: 'm-99887766@moe-dl.edu.my', pin: '1122', color: '#10b981' }
+    ];
 
-            students.forEach(student => {
-                const isActive = student.id === activeStudentId;
-                const pill = document.createElement('button');
-                pill.onclick = () => selectStudent(student.id);
-                pill.className = `flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition duration-200 shrink-0 border ${
-                    isActive 
-                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200' 
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
-                }`;
+    let students = JSON.parse(localStorage.getItem('pintarkids_students')) || defaultStudents;
+    let selectedStudent = null;
+    let enteredPin = "";
 
-                const initial = student.name.charAt(0).toUpperCase();
-                pill.innerHTML = `
-                    <span class="w-5 h-5 rounded-full ${isActive ? 'bg-white text-indigo-600' : 'bg-slate-300 text-slate-700'} flex items-center justify-center text-[10px] font-black">
-                        ${initial}
-                    </span>
-                    <span>${student.name}</span>
-                `;
-                container.appendChild(pill);
-            });
-        }
+    function saveStudents() {
+      localStorage.setItem('pintarkids_students', JSON.stringify(students));
+    }
 
-        function renderActiveStudentInfo() {
-            const current = getActiveStudent();
-            
-            // Header
-            document.getElementById('headerStudentName').innerText = current.name;
-            document.getElementById('headerAvatar').innerText = current.name.charAt(0).toUpperCase();
-            
-            // Banner
-            document.getElementById('activeDelimaEmail').innerText = current.email;
-        }
+    function renderProfiles() {
+      const container = document.getElementById('profilesContainer');
+      container.innerHTML = '';
 
-        /* COPY EMAIL & GOOGLE LOGIN FUNCTIONS */
-        function copyDelimaEmail() {
-            const current = getActiveStudent();
-            if (!current.email || current.email.includes('sila_tambah')) {
-                showToast('Sila tambah/pilih murid terlebih dahulu', 'fa-triangle-exclamation');
-                return;
-            }
+      students.forEach(s => {
+        const initial = s.name.charAt(0).toUpperCase();
+        const card = document.createElement('div');
+        card.className = 'profile-card';
+        card.onclick = () => selectStudent(s);
+        card.innerHTML = `
+          <div class="avatar-circle" style="background-color: ${s.color || '#3b82f6'};">${initial}</div>
+          <div class="profile-name">${s.name}</div>
+          <div class="profile-email-tag">${s.email ? 'DELIMa Ready' : 'Tiada E-mel'}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
 
-            // Copy logic
-            const tempInput = document.createElement('input');
-            tempInput.value = current.email;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
+    function selectStudent(student) {
+      selectedStudent = student;
+      enteredPin = "";
+      updatePinDisplay();
+      document.getElementById('modalStudentName').innerText = 'Selamat Datang, ' + student.name + '!';
+      document.getElementById('studentPinModal').classList.add('active');
+    }
 
-            showToast('E-mel DELIMa berjaya disalin!', 'fa-copy');
-        }
+    function pressPin(num) {
+      if (enteredPin.length < 4) {
+        enteredPin += num;
+        updatePinDisplay();
+      }
+      if (enteredPin.length === 4) {
+        setTimeout(submitPin, 200);
+      }
+    }
 
-        function launchGoogleLogin() {
-            const current = getActiveStudent();
-            const loginUrl = `https://accounts.google.com/AccountChooser?Email=${encodeURIComponent(current.email)}`;
-            window.open(loginUrl, '_blank');
-        }
+    function clearPin() {
+      enteredPin = "";
+      updatePinDisplay();
+    }
 
-        /* RENDER APP CARDS WITH OFFICIAL LOGOS & FALLBACKS */
-        function renderAppGrid() {
-            const grid = document.getElementById('appGrid');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-            const noResults = document.getElementById('noResults');
-            
-            grid.innerHTML = '';
-            let count = 0;
+    function updatePinDisplay() {
+      document.getElementById('pinDisplay').innerText = '•'.repeat(enteredPin.length) || '••••';
+    }
 
-            APPS_DATA.forEach(app => {
-                const matchesSearch = app.name.toLowerCase().includes(searchVal) || app.desc.toLowerCase().includes(searchVal);
-                const matchesCategory = currentCategory === 'all' || app.category === currentCategory;
+    function submitPin() {
+      if (enteredPin === selectedStudent.pin) {
+        closeModal('studentPinModal');
+        openDashboard(selectedStudent);
+      } else {
+        alert('PIN Salah! Sila cuba lagi.');
+        clearPin();
+      }
+    }
 
-                if (matchesSearch && matchesCategory) {
-                    count++;
-                    const card = document.createElement('div');
-                    card.className = 'app-card glass-card rounded-2xl p-5 border border-slate-200/80 hover:border-indigo-300 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between group';
+    function openDashboard(student) {
+      document.getElementById('profileSelectionView').style.display = 'none';
+      document.getElementById('studentDashboardView').style.display = 'block';
 
-                    card.innerHTML = `
-                        <div>
-                            <!-- Header with Official Logo Container & Badge -->
-                            <div class="flex items-start justify-between gap-3 mb-4">
-                                <div class="logo-box w-16 h-16 rounded-2xl ${app.bgColor} border border-slate-200/60 p-2.5 flex items-center justify-center shrink-0">
-                                    <img src="${app.logo}" alt="${app.name}" class="w-full h-full object-contain filter drop-shadow-sm" 
-                                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/e2e8f0/475569?text=Logo';">
-                                </div>
-                                <span class="text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full border border-slate-200/60">
-                                    ${app.badge}
-                                </span>
-                            </div>
+      // Set header user badge
+      document.getElementById('activeUserBadge').style.display = 'flex';
+      document.getElementById('activeUserName').innerText = student.name;
+      document.getElementById('activeAvatar').innerText = student.name.charAt(0).toUpperCase();
+      document.getElementById('activeAvatar').style.background = student.color || '#3b82f6';
 
-                            <!-- App Title & Description -->
-                            <h3 class="font-bold text-slate-900 text-base mb-1.5 group-hover:text-indigo-600 transition">
-                                ${app.name}
-                            </h3>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                                ${app.desc}
-                            </p>
-                        </div>
+      // Set dashboard info
+      document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! 👋';
+      document.getElementById('dashDelimaEmail').innerText = student.email || 'Tiada E-mel Berdaftar';
+      
+      const loginBtn = document.getElementById('delimaLoginBtn');
+      loginBtn.href = `https://accounts.google.com/AccountChooser?continue=https://classroom.google.com&Email=${encodeURIComponent(student.email)}`;
+    }
 
-                        <!-- Action Launch Button -->
-                        <div class="mt-5 pt-3 border-t border-slate-100">
-                            <a href="${app.url}" target="_blank" rel="noopener noreferrer" 
-                                class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-sm">
-                                <span>Buka Portal</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            </a>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                }
-            });
+    function logoutStudent() {
+      selectedStudent = null;
+      document.getElementById('activeUserBadge').style.display = 'none';
+      document.getElementById('studentDashboardView').style.display = 'none';
+      document.getElementById('profileSelectionView').style.display = 'block';
+    }
 
-            if (count === 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-            }
-        }
+    function copyDelimaEmail() {
+      const email = document.getElementById('dashDelimaEmail').innerText;
+      if (email && email !== 'Tiada E-mel Berdaftar') {
+        navigator.clipboard.writeText(email);
+        alert('✅ E-mel DELIMa berjaya disalin: ' + email);
+      }
+    }
 
-        /* FILTER & SEARCH HANDLERS */
-        function filterApps() {
-            renderAppGrid();
-        }
+    /* Modal Pentadbir */
+    function openParentModal() {
+      document.getElementById('parentAuthSection').style.display = 'block';
+      document.getElementById('parentControlSection').style.display = 'none';
+      document.getElementById('parentPinInput').value = '';
+      document.getElementById('parentModal').classList.add('active');
+    }
 
-        function setCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.className = 'cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
-            });
-            const activeBtn = document.getElementById(`cat-${cat}`);
-            if (activeBtn) {
-                activeBtn.className = 'cat-btn px-4 py-2 rounded-xl bg-indigo-600 text-white shadow-sm transition';
-            }
-            renderAppGrid();
-        }
+    function verifyParentPin() {
+      const pin = document.getElementById('parentPinInput').value;
+      if (pin === '1234') {
+        document.getElementById('parentAuthSection').style.display = 'none';
+        document.getElementById('parentControlSection').style.display = 'block';
+        renderStudentManageList();
+      } else {
+        alert('PIN Pentadbir Salah! (Lalai ialah 1234)');
+      }
+    }
 
-        /* PARENT MODAL & ADMIN FUNCTIONS */
-        function openParentModal() {
-            document.getElementById('parentModal').classList.remove('hidden');
-            if (!isParentUnlocked) {
-                document.getElementById('pinLockSection').classList.remove('hidden');
-                document.getElementById('adminPanelSection').classList.add('hidden');
-                document.getElementById('pinInput').value = '';
-                document.getElementById('pinInput').focus();
-            } else {
-                showAdminPanel();
-            }
-        }
+    function addNewStudent() {
+      const name = document.getElementById('newStudentName').value.trim();
+      const email = document.getElementById('newStudentEmail').value.trim();
+      const pin = document.getElementById('newStudentPin').value.trim();
 
-        function closeParentModal() {
-            document.getElementById('parentModal').classList.add('hidden');
-        }
+      if (!name || !pin) {
+        alert('Sila isi Nama dan PIN murid!');
+        return;
+      }
 
-        function verifyPin() {
-            const pinVal = document.getElementById('pinInput').value;
-            const errorMsg = document.getElementById('pinErrorMsg');
+      const colors = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-            if (pinVal === parentPin) {
-                isParentUnlocked = true;
-                errorMsg.classList.add('hidden');
-                showAdminPanel();
-                showToast('Akses Mod Guru/Ibu Bapa Dibenarkan', 'fa-lock-open');
-            } else {
-                errorMsg.classList.remove('hidden');
-                document.getElementById('pinInput').value = '';
-            }
-        }
+      const newStudent = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        pin: pin,
+        color: randomColor
+      };
 
-        function showAdminPanel() {
-            document.getElementById('pinLockSection').classList.add('hidden');
-            document.getElementById('adminPanelSection').classList.remove('hidden');
-            renderAdminStudentList();
-        }
+      students.push(newStudent);
+      saveStudents();
+      renderProfiles();
+      renderStudentManageList();
 
-        function lockParentMode() {
-            isParentUnlocked = false;
-            openParentModal();
-            showToast('Mod Pentadbir Dikunci', 'fa-lock');
-        }
+      document.getElementById('newStudentName').value = '';
+      document.getElementById('newStudentEmail').value = '';
+      document.getElementById('newStudentPin').value = '';
+      alert('Profil murid berjaya ditambah!');
+    }
 
-        function renderAdminStudentList() {
-            const container = document.getElementById('adminStudentList');
-            container.innerHTML = '';
+    function deleteStudent(id) {
+      if (confirm('Adakah anda pasti mahu memadam profil murid ini?')) {
+        students = students.filter(s => s.id !== id);
+        saveStudents();
+        renderProfiles();
+        renderStudentManageList();
+      }
+    }
 
-            students.forEach(student => {
-                const item = document.createElement('div');
-                item.className = 'flex items-center justify-between p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-xs';
-                item.innerHTML = `
-                    <div class="truncate mr-2">
-                        <div class="font-bold text-slate-800">${student.name}</div>
-                        <div class="font-mono text-[10px] text-slate-500 truncate">${student.email}</div>
-                    </div>
-                    <button onclick="deleteStudent('${student.id}')" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 hover:bg-rose-50 rounded-lg transition" title="Padam Murid">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                `;
-                container.appendChild(item);
-            });
-        }
+    function renderStudentManageList() {
+      const list = document.getElementById('studentManageList');
+      list.innerHTML = '';
+      students.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'student-manage-item';
+        item.innerHTML = `
+          <div>
+            <strong>${s.name}</strong> (PIN: ${s.pin})<br>
+            <small style="color: #64748b;">${s.email || 'Tiada E-mel'}</small>
+          </div>
+          <button onclick="deleteStudent(${s.id})" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Padam</button>
+        `;
+        list.appendChild(item);
+      });
+    }
 
-        function handleAddStudent(event) {
-            event.preventDefault();
-            const name = document.getElementById('newStudentName').value.trim();
-            const email = document.getElementById('newStudentEmail').value.trim();
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
 
-            if (!name || !email) return;
-
-            const newStudent = {
-                id: Date.now().toString(),
-                name: name,
-                email: email
-            };
-
-            students.push(newStudent);
-            activeStudentId = newStudent.id;
-            saveStudentsToStorage();
-
-            document.getElementById('addStudentForm').reset();
-            renderAdminStudentList();
-            renderStudentsPills();
-            renderActiveStudentInfo();
-
-            showToast(`Murid ${name} berjaya ditambah!`, 'fa-circle-check');
-        }
-
-        function deleteStudent(id) {
-            if (students.length <= 1) {
-                alert('Sekurang-kurangnya satu profil murid mesti kekal.');
-                return;
-            }
-            if (confirm('Adakah anda pasti mahu memadam profil murid ini?')) {
-                students = students.filter(s => s.id !== id);
-                if (activeStudentId === id) {
-                    activeStudentId = students[0].id;
-                }
-                saveStudentsToStorage();
-                renderAdminStudentList();
-                renderStudentsPills();
-                renderActiveStudentInfo();
-                showToast('Profil murid dipadam', 'fa-trash-can');
-            }
-        }
-
-        /* TOAST NOTIFICATION HELPER */
-        function showToast(msg, iconClass = 'fa-circle-check') {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMsg.innerText = msg;
-            toastIcon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-
-            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-            
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-            }, 3000);
-        }
-    </script>
+    // Inisialisasi awal
+    renderProfiles();
+  </script>
 </body>
 </html>
