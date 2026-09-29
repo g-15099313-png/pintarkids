@@ -1,870 +1,332 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PintarKids Launcher 🚀</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts - Fredoka & Nunito -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            fredoka: ['Fredoka', 'sans-serif'],
-            nunito: ['Nunito', 'sans-serif'],
-          },
-          animation: {
-            'bounce-short': 'bounce 0.6s ease-in-out 1',
-            'shake': 'shake 0.4s ease-in-out',
-            'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          },
-          keyframes: {
-            shake: {
-              '0%, 100%': { transform: 'translateX(0)' },
-              '20%, 60%': { transform: 'translateX(-10px)' },
-              '40%, 80%': { transform: 'translateX(10px)' },
-            },
-            popIn: {
-              '0%': { opacity: '0', transform: 'scale(0.8)' },
-              '100%': { opacity: '1', transform: 'scale(1)' },
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PintarKids - Portal Pelancar Murid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
             }
-          }
         }
-      }
-    }
-  </script>
-  <style>
-    body {
-      font-family: 'Nunito', sans-serif;
-      user-select: none;
-    }
-    h1, h2, h3, .font-fun {
-      font-family: 'Fredoka', cursive;
-    }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 20px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-  </style>
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #faf5ff 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .logo-box {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .app-card:hover .logo-box {
+            transform: scale(1.05);
+            transition: transform 0.2s ease;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-amber-100 via-sky-100 to-indigo-100 min-h-screen flex flex-col justify-between text-slate-800">
+<body class="text-slate-800 pb-12 antialiased">
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
-
-  <!-- Main Navigation Header -->
-  <header class="bg-white/80 backdrop-blur-md border-b-4 border-amber-300 sticky top-0 z-30 shadow-sm px-4 py-3 sm:px-8 flex justify-between items-center">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="goToHome()">
-      <div class="w-11 h-11 bg-amber-400 rounded-2xl flex items-center justify-center text-2xl shadow-md transform -rotate-3 hover:rotate-0 transition-transform">
-        🚀
-      </div>
-      <div>
-        <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent leading-none">
-          PintarKids
-        </h1>
-        <p class="text-xs font-semibold text-slate-500">Portal Pelancar Murid</p>
-      </div>
-    </div>
-
-    <!-- Right Header Controls -->
-    <div class="flex items-center gap-2">
-      <button id="adminBtn" onclick="openAdminPinModal()" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl text-xs sm:text-sm flex items-center gap-2 transition border border-indigo-200 shadow-sm active:scale-95">
-        <i class="fa-solid fa-user-gear text-sm"></i>
-        <span>Mod Ibu Bapa / Guru</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- MAIN CONTAINER -->
-  <main class="container mx-auto px-4 py-6 flex-grow flex flex-col justify-center max-w-6xl">
-
-    <!-- VIEW 1: PROFILE SELECTION SECTION -->
-    <section id="profileSelectionSection" class="w-full flex flex-col items-center">
-      <div class="text-center mb-8 max-w-xl">
-        <span class="inline-block px-4 py-1.5 bg-amber-200 text-amber-800 font-bold rounded-full text-xs uppercase tracking-wider mb-2 shadow-sm">
-          Selamat Datang 🎉
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-800 mb-2">
-          Siapa Yang Nak Belajar Hari Ini?
-        </h2>
-        <p class="text-slate-600 text-sm sm:text-base">
-          Pilih profil anda untuk membuka aplikasi pembelajaran tanpa perlu e-mel!
-        </p>
-      </div>
-
-      <!-- Profiles Grid -->
-      <div id="profilesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-4xl">
-        <!-- Rendered via JS -->
-      </div>
-    </section>
-
-
-    <!-- VIEW 2: STUDENT DASHBOARD SECTION (Post Login) -->
-    <section id="studentDashboardSection" class="hidden w-full flex-col">
-      <!-- Welcome Banner -->
-      <div id="welcomeBanner" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col sm:flex-row justify-between items-center gap-6 relative overflow-hidden">
-        <!-- Decorative Background Circle -->
-        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-
-        <div class="flex items-center gap-5 z-10">
-          <div id="activeAvatar" class="w-20 h-20 sm:w-24 sm:h-24 bg-white/20 backdrop-blur-md border-4 border-white/50 rounded-3xl flex items-center justify-center text-4xl sm:text-5xl shadow-inner">
-            👧
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span id="activeGradeBadge" class="bg-amber-300 text-amber-900 font-extrabold px-3 py-0.5 rounded-full text-xs uppercase tracking-wide">
-                Tahun 3
-              </span>
-              <span class="bg-green-400 text-green-950 font-bold px-2 py-0.5 rounded-full text-[10px] flex items-center gap-1">
-                <span class="w-2 h-2 bg-green-900 rounded-full animate-ping"></span> Log Masuk
-              </span>
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-200/60 shadow-sm mb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-md shadow-indigo-200">
+                    <i class="fa-solid font-bold fa-rocket"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        PintarKids
+                    </h1>
+                    <p class="text-xs font-semibold text-slate-500 hidden sm:block">Portal Pelancar Murid Sekolah</p>
+                </div>
             </div>
-            <h2 id="activeStudentName" class="text-2xl sm:text-4xl font-bold text-white tracking-wide">
-              Selamat Datang, Aina! 🎉
-            </h2>
-            <p class="text-indigo-100 text-xs sm:text-sm mt-1">
-              Pilih portal pembelajaran di bawah untuk mulakan sesi belajar anda.
-            </p>
-          </div>
-        </div>
 
-        <button onclick="logoutStudent()" class="z-10 px-5 py-3 bg-red-500/80 hover:bg-red-600 text-white font-bold rounded-2xl text-sm flex items-center gap-2 backdrop-blur-sm transition border border-red-300/40 shadow-lg active:scale-95">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Log Keluar</span>
-        </button>
-      </div>
+            <!-- Active Student Quick Profile & Mode Toggle -->
+            <div class="flex items-center gap-3">
+                <!-- Selected Profile Display -->
+                <div id="activeProfileHeader" class="hidden sm:flex items-center gap-2 bg-indigo-50/80 border border-indigo-100 rounded-full py-1.5 px-3">
+                    <div id="headerAvatar" class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
+                        M
+                    </div>
+                    <span id="headerStudentName" class="text-sm font-bold text-indigo-900 max-w-[120px] truncate">Pilih Murid</span>
+                </div>
 
-      <!-- Quick Apps Grid Title -->
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-compass text-amber-500"></i> Portal & Aplikasi Pembelajaran
-        </h3>
-        <div class="relative w-48 sm:w-64">
-          <input type="text" id="appSearchInput" onkeyup="filterApps()" placeholder="Cari aplikasi..." class="w-full px-3 py-1.5 pl-8 rounded-xl text-xs sm:text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
-        </div>
-      </div>
-
-      <!-- Launcher Apps Grid -->
-      <div id="appsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
-        <!-- Rendered via JS -->
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="bg-white/60 border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-    <p>🚀 <strong>PintarKids Launcher</strong> — Pereka Khas Untuk Memudahkan Akses Pembelajaran Murid Sekolah Rendah.</p>
-  </footer>
-
-
-  <!-- MODAL 1: STUDENT VISUAL PIN KEYPAD -->
-  <div id="pinModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div id="pinModalCard" class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border-4 border-indigo-100 animate-pop-in relative text-center">
-      
-      <!-- Close Button -->
-      <button onclick="closePinModal()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 font-bold transition">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <!-- Student Target Avatar Header -->
-      <div id="pinTargetAvatar" class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-2 shadow-inner border-2 border-amber-300">
-        👧
-      </div>
-      <h3 id="pinTargetName" class="text-xl font-bold text-slate-800">Aina</h3>
-      <p class="text-xs text-slate-500 mb-4">Masukkan 4-digit PIN anda</p>
-
-      <!-- PIN Indicators -->
-      <div id="pinDots" class="flex justify-center gap-3 mb-6">
-        <div class="pin-dot w-4 h-4 rounded-full border-2 border-indigo-400 bg-slate-100"></div>
-        <div class="pin-dot w-4 h-4 rounded-full border-2 border-indigo-400 bg-slate-100"></div>
-        <div class="pin-dot w-4 h-4 rounded-full border-2 border-indigo-400 bg-slate-100"></div>
-        <div class="pin-dot w-4 h-4 rounded-full border-2 border-indigo-400 bg-slate-100"></div>
-      </div>
-
-      <!-- On-Screen Visual Keypad -->
-      <div class="grid grid-cols-3 gap-3 mb-3">
-        <button onclick="pressPinNum('1')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">1</button>
-        <button onclick="pressPinNum('2')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">2</button>
-        <button onclick="pressPinNum('3')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">3</button>
-        <button onclick="pressPinNum('4')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">4</button>
-        <button onclick="pressPinNum('5')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">5</button>
-        <button onclick="pressPinNum('6')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">6</button>
-        <button onclick="pressPinNum('7')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">7</button>
-        <button onclick="pressPinNum('8')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">8</button>
-        <button onclick="pressPinNum('9')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">9</button>
-        <button onclick="clearPin()" class="h-14 bg-red-50 hover:bg-red-100 border-2 border-red-200 text-red-600 font-bold text-xs rounded-2xl shadow-sm active:scale-95 transition flex flex-col items-center justify-center">
-          <span>PADAM</span>
-        </button>
-        <button onclick="pressPinNum('0')" class="h-14 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-2xl font-extrabold rounded-2xl text-slate-700 shadow-sm active:scale-95 transition">0</button>
-        <button onclick="backspacePin()" class="h-14 bg-amber-50 hover:bg-amber-100 border-2 border-amber-200 text-amber-700 font-bold text-lg rounded-2xl shadow-sm active:scale-95 transition flex items-center justify-center">
-          <i class="fa-solid fa-delete-left"></i>
-        </button>
-      </div>
-
-      <p id="pinErrorMsg" class="text-xs text-red-500 font-bold h-4"></p>
-    </div>
-  </div>
-
-
-  <!-- MODAL 2: ADMIN LOGIN MODAL -->
-  <div id="adminPinModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border-4 border-slate-200 text-center relative animate-pop-in">
-      <button onclick="closeAdminPinModal()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 font-bold transition">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
-        <i class="fa-solid fa-shield-halved"></i>
-      </div>
-      <h3 class="text-xl font-bold text-slate-800">Mod Guru / Ibu Bapa</h3>
-      <p class="text-xs text-slate-500 mb-4">Masukkan PIN Pentadbir (Default: <strong>1234</strong>)</p>
-
-      <input type="password" id="adminPinInput" maxlength="4" placeholder="••••" class="w-36 text-center text-3xl tracking-widest py-2 px-3 border-2 border-indigo-300 rounded-2xl font-bold mb-4 focus:outline-none focus:ring-4 focus:ring-indigo-200">
-
-      <div class="flex gap-2">
-        <button onclick="closeAdminPinModal()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-sm transition">
-          Batal
-        </button>
-        <button onclick="verifyAdminPin()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm transition shadow-md">
-          Masuk
-        </button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODAL 3: ADMIN MANAGEMENT DASHBOARD -->
-  <div id="adminDashboardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border-4 border-indigo-200 max-h-[90vh] overflow-y-auto relative animate-pop-in">
-      
-      <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
-        <div>
-          <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-users-gear text-indigo-600"></i> Pengurusan Profil Murid
-          </h3>
-          <p class="text-xs text-slate-500">Tambah, sunting atau padam profil murid di peranti ini</p>
-        </div>
-        <button onclick="closeAdminDashboardModal()" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 font-bold transition">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Add New Student Form -->
-      <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-2xl p-4 sm:p-5 mb-6">
-        <h4 class="font-bold text-indigo-900 text-sm mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-user-plus"></i> Tambah Profil Murid Baru
-        </h4>
-        
-        <form id="addStudentForm" onsubmit="handleAddStudent(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="text-xs font-bold text-slate-600 block mb-1">Nama Murid</label>
-            <input type="text" id="newStudentName" required placeholder="Contoh: Aishah" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div>
-
-          <div>
-            <label class="text-xs font-bold text-slate-600 block mb-1">Kelas / Tahun</label>
-            <input type="text" id="newStudentGrade" required placeholder="Contoh: Tahun 2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div>
-
-          <div>
-            <label class="text-xs font-bold text-slate-600 block mb-1">Pilih Emoji Avatar</label>
-            <select id="newStudentAvatar" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
-              <option value="👧">👧 Budak Perempuan 1</option>
-              <option value="👦">👦 Budak Lelaki 1</option>
-              <option value="👩‍🦱">👩‍🦱 Budak Perempuan 2</option>
-              <option value="🧑">🧑 Budak Lelaki 2</option>
-              <option value="🦊">🦊 Rubah Comel</option>
-              <option value="🦁">🦁 Singa Gagah</option>
-              <option value="🐼">🐼 Panda Jinak</option>
-              <option value="🚀">🚀 Angkasawan</option>
-              <option value="🎨">🎨 Pelukis</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="text-xs font-bold text-slate-600 block mb-1">PIN 4-Digit Mudah</label>
-            <input type="password" id="newStudentPin" maxlength="4" pattern="\d{4}" required placeholder="Contoh: 1234" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div>
-
-          <div class="sm:col-span-2 mt-2">
-            <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-              <i class="fa-solid fa-plus"></i> Simpan Profil Murid
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Current Profiles List -->
-      <h4 class="font-bold text-slate-800 text-sm mb-3">Senarai Profil Semasa</h4>
-      <div id="adminStudentsList" class="space-y-2 mb-6">
-        <!-- Rendered via JS -->
-      </div>
-
-      <!-- Reset Data Action -->
-      <div class="pt-4 border-t border-slate-200 flex justify-between items-center">
-        <button onclick="resetDefaultData()" class="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition flex items-center gap-1.5">
-          <i class="fa-solid fa-rotate-left"></i> Reset Ke Data Asal
-        </button>
-        <button onclick="closeAdminDashboardModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm rounded-xl transition">
-          Selesai
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-
-  <!-- MODAL 4: CUSTOM CONFIRMATION DIALOG -->
-  <div id="confirmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center animate-pop-in">
-      <div class="w-14 h-14 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-3">
-        <i class="fa-solid fa-circle-exclamation"></i>
-      </div>
-      <h3 id="confirmTitle" class="text-lg font-bold text-slate-800 mb-1">Pengesahan</h3>
-      <p id="confirmMessage" class="text-xs text-slate-600 mb-5">Adakah anda pasti mahu meneruskan?</p>
-
-      <div class="flex gap-2">
-        <button id="confirmCancelBtn" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
-          Batal
-        </button>
-        <button id="confirmOkBtn" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition shadow-md">
-          Ya, Teruskan
-        </button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- JAVASCRIPT CODE -->
-  <script>
-    // --- DEFAULT DATA & INITIALIZATION ---
-    const DEFAULT_STUDENTS = [
-      { id: '1', name: 'Aina', grade: 'Tahun 3', avatar: '👧', pin: '1234', color: 'from-pink-400 to-rose-500' },
-      { id: '2', name: 'Adam', grade: 'Tahun 5', avatar: '👦', pin: '5678', color: 'from-blue-400 to-indigo-500' },
-      { id: '3', name: 'Maya', grade: 'Tahun 1', avatar: '👩‍🦱', pin: '0000', color: 'from-amber-400 to-orange-500' }
-    ];
-
-    const LEARNING_APPS = [
-      {
-        id: 'delima',
-        title: 'Portal DELIMa KPM',
-        desc: 'Aksess Portal Digital Educational Learning Initiative Malaysia',
-        icon: '🇲🇾',
-        color: 'bg-blue-600 text-white',
-        url: 'https://delima.moe-dl.edu.my'
-      },
-      {
-        id: 'classroom',
-        title: 'Google Classroom',
-        desc: 'Tugasan sekolah, nota, dan bilik darjah dalam talian',
-        icon: '🏫',
-        color: 'bg-emerald-600 text-white',
-        url: 'https://classroom.google.com'
-      },
-      {
-        id: 'ytkids',
-        title: 'YouTube Kids',
-        desc: 'Video pendidikan selamat dan menyeronokkan',
-        icon: '📺',
-        color: 'bg-red-600 text-white',
-        url: 'https://www.youtubekids.com'
-      },
-      {
-        id: 'scratch',
-        title: 'Scratch Coding',
-        desc: 'Belajar membina permainan dan animasi mudah',
-        icon: '🐱',
-        color: 'bg-amber-500 text-white',
-        url: 'https://scratch.mit.edu'
-      },
-      {
-        id: 'drive',
-        title: 'Google Drive',
-        desc: 'Simpan dan lihat fail, lembaran kerja, dan dokumen',
-        icon: '📁',
-        color: 'bg-yellow-500 text-white',
-        url: 'https://drive.google.com'
-      },
-      {
-        id: 'canva',
-        title: 'Canva Design',
-        desc: 'Cipta poster, lukisan, dan persembahan kreatif',
-        icon: '🎨',
-        color: 'bg-cyan-500 text-white',
-        url: 'https://www.canva.com'
-      },
-      {
-        id: 'quizizz',
-        title: 'Quizizz Interactive',
-        desc: 'Kuiz interaktif dan latihan ulang kaji',
-        icon: '🎮',
-        color: 'bg-purple-600 text-white',
-        url: 'https://quizizz.com'
-      },
-      {
-        id: 'wordwall',
-        title: 'Wordwall Games',
-        desc: 'Permainan bahasa dan sains interaktif',
-        icon: '🧩',
-        color: 'bg-sky-500 text-white',
-        url: 'https://wordwall.net'
-      }
-    ];
-
-    // App State
-    let students = [];
-    let currentStudent = null;
-    let selectedTargetStudent = null;
-    let typedPin = '';
-    const ADMIN_PIN = '1234';
-
-    // --- LOCAL STORAGE HELPERS ---
-    function loadStudents() {
-      const saved = localStorage.getItem('pintarkids_students');
-      if (saved) {
-        try {
-          students = JSON.parse(saved);
-        } catch (e) {
-          students = [...DEFAULT_STUDENTS];
-        }
-      } else {
-        students = [...DEFAULT_STUDENTS];
-        saveStudents();
-      }
-    }
-
-    function saveStudents() {
-      localStorage.setItem('pintarkids_students', JSON.stringify(students));
-    }
-
-    // --- TOAST NOTIFICATION SYSTEM ---
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      
-      const bgColors = {
-        success: 'bg-green-600 text-white',
-        error: 'bg-red-600 text-white',
-        info: 'bg-indigo-600 text-white',
-        amber: 'bg-amber-500 text-white'
-      };
-
-      toast.className = `px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-bold flex items-center gap-2 pointer-events-auto transform transition-all duration-300 translate-y-[-10px] opacity-0 ${bgColors[type] || bgColors.info}`;
-      toast.innerHTML = `<span>${message}</span>`;
-
-      container.appendChild(toast);
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
-      }, 10);
-
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-[-10px]');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // --- CUSTOM CONFIRM MODAL ---
-    function customConfirm(title, message, onOk) {
-      const modal = document.getElementById('confirmModal');
-      document.getElementById('confirmTitle').innerText = title;
-      document.getElementById('confirmMessage').innerText = message;
-      
-      modal.classList.remove('hidden');
-
-      const okBtn = document.getElementById('confirmOkBtn');
-      const cancelBtn = document.getElementById('confirmCancelBtn');
-
-      const cleanUp = () => {
-        modal.classList.add('hidden');
-        okBtn.onclick = null;
-        cancelBtn.onclick = null;
-      };
-
-      okBtn.onclick = () => {
-        cleanUp();
-        onOk();
-      };
-
-      cancelBtn.onclick = cleanUp;
-    }
-
-    // --- RENDER FUNCTIONS ---
-    function renderProfileSelection() {
-      const grid = document.getElementById('profilesGrid');
-      grid.innerHTML = '';
-
-      const colors = [
-        'from-pink-400 to-rose-500',
-        'from-blue-400 to-indigo-500',
-        'from-amber-400 to-orange-500',
-        'from-emerald-400 to-teal-500',
-        'from-purple-400 to-violet-500'
-      ];
-
-      students.forEach((student, idx) => {
-        const colorClass = student.color || colors[idx % colors.length];
-        const card = document.createElement('div');
-        card.className = `bg-white rounded-3xl p-5 shadow-lg hover:shadow-2xl border-2 border-slate-100 hover:border-indigo-300 transition-all cursor-pointer transform hover:-translate-y-2 flex flex-col items-center group relative overflow-hidden`;
-        card.onclick = () => openPinModal(student);
-
-        card.innerHTML = `
-          <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r ${colorClass}"></div>
-          <div class="w-20 h-20 sm:w-24 sm:h-24 bg-slate-50 group-hover:bg-indigo-50 rounded-full flex items-center justify-center text-4xl sm:text-5xl my-2 shadow-inner border-2 border-slate-200 group-hover:border-indigo-200 transition-colors">
-            ${student.avatar || '👧'}
-          </div>
-          <span class="bg-indigo-100 text-indigo-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-1">
-            ${student.grade || 'Murid'}
-          </span>
-          <h3 class="text-lg sm:text-xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
-            ${student.name}
-          </h3>
-          <p class="text-[10px] text-slate-400 font-semibold mt-1 flex items-center gap-1">
-            <i class="fa-solid fa-key text-[9px]"></i> Tekan Untuk Log Masuk
-          </p>
-        `;
-
-        grid.appendChild(card);
-      });
-
-      // Quick Add Card for parents/teachers
-      const addCard = document.createElement('div');
-      addCard.className = `bg-slate-50/80 border-2 border-dashed border-slate-300 hover:border-indigo-400 rounded-3xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col items-center justify-center min-h-[190px] text-slate-400 hover:text-indigo-600 group`;
-      addCard.onclick = openAdminPinModal;
-      addCard.innerHTML = `
-        <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center text-2xl mb-2 shadow-sm border border-slate-200 group-hover:border-indigo-300 group-hover:scale-110 transition-transform">
-          <i class="fa-solid fa-user-plus text-indigo-500"></i>
-        </div>
-        <span class="text-xs font-bold text-slate-600 group-hover:text-indigo-600">Tambah Profil</span>
-        <span class="text-[10px] text-slate-400 text-center mt-0.5">Mod Guru / Ibu Bapa</span>
-      `;
-      grid.appendChild(addCard);
-    }
-
-    function renderApps(appsToRender = LEARNING_APPS) {
-      const grid = document.getElementById('appsGrid');
-      grid.innerHTML = '';
-
-      if (appsToRender.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-12 text-center text-slate-400">
-            <i class="fa-solid fa-magnifying-glass text-3xl mb-2"></i>
-            <p class="font-bold text-sm">Tiada aplikasi dijumpai</p>
-          </div>
-        `;
-        return;
-      }
-
-      appsToRender.forEach(app => {
-        const card = document.createElement('div');
-        card.className = `bg-white rounded-3xl p-5 shadow-md hover:shadow-xl border-2 border-slate-100 hover:border-indigo-300 transition-all flex flex-col justify-between group transform hover:-translate-y-1`;
-
-        card.innerHTML = `
-          <div>
-            <div class="flex justify-between items-start mb-3">
-              <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm ${app.color}">
-                ${app.icon}
-              </div>
-              <button onclick="copyLink('${app.url}')" title="Salin pautan" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs transition">
-                <i class="fa-solid fa-link"></i>
-              </button>
+                <!-- Admin / Parent Button -->
+                <button onclick="openParentModal()" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 rounded-xl shadow-sm transition duration-200">
+                    <i class="fa-solid fa-user-gear text-amber-400"></i>
+                    <span>Mod Ibu Bapa / Guru</span>
+                </button>
             </div>
-            <h4 class="font-bold text-slate-800 text-base sm:text-lg group-hover:text-indigo-600 transition-colors mb-1">
-              ${app.title}
-            </h4>
-            <p class="text-xs text-slate-500 line-clamp-2 mb-4">
-              ${app.desc}
-            </p>
-          </div>
+        </div>
+    </header>
 
-          <a href="${app.url}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white font-bold rounded-2xl text-xs flex items-center justify-center gap-2 transition-colors shadow-sm">
-            <span>Buka Portal</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-          </a>
-        `;
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-        grid.appendChild(card);
-      });
-    }
+        <!-- STUDENT PROFILE SWITCHER & DELIMA QUICK ACCESS BANNER -->
+        <section class="glass-card rounded-3xl p-5 sm:p-6 shadow-xl shadow-slate-200/50 border border-white">
+            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                
+                <!-- Left: Student Selector -->
+                <div class="w-full md:w-auto flex-1">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
+                            <i class="fa-solid fa-users text-sm"></i> Profil Murid Aktif
+                        </h2>
+                        <button onclick="openParentModal()" class="text-xs text-indigo-600 hover:underline font-semibold sm:hidden">
+                            + Urus Murid
+                        </button>
+                    </div>
 
-    function filterApps() {
-      const query = document.getElementById('appSearchInput').value.toLowerCase().trim();
-      const filtered = LEARNING_APPS.filter(app => 
-        app.title.toLowerCase().includes(query) || 
-        app.desc.toLowerCase().includes(query)
-      );
-      renderApps(filtered);
-    }
+                    <!-- Horizontal Student Pills -->
+                    <div id="studentPillsList" class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                        <!-- Rendered dynamically by JS -->
+                    </div>
+                </div>
 
-    function copyLink(url) {
-      navigator.clipboard.writeText(url).then(() => {
-        showToast('Pautan berjaya disalin!', 'success');
-      }).catch(() => {
-        showToast('Gagal menyalin pautan', 'error');
-      });
-    }
+                <!-- Right: Active Student DELIMa Email Box -->
+                <div class="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-4 text-white shadow-lg shadow-indigo-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="space-y-0.5">
+                        <div class="text-xs text-indigo-200 font-medium flex items-center gap-1.5">
+                            <i class="fa-solid fa-id-card"></i> Akaun Google DELIMa Murid:
+                        </div>
+                        <div id="activeDelimaEmail" class="font-mono text-sm sm:text-base font-bold tracking-tight text-yellow-300 select-all">
+                            Sila pilih murid dahulu
+                        </div>
+                    </div>
 
-    // --- PIN MODAL LOGIC ---
-    function openPinModal(student) {
-      selectedTargetStudent = student;
-      typedPin = '';
-      
-      document.getElementById('pinTargetName').innerText = student.name;
-      document.getElementById('pinTargetAvatar').innerText = student.avatar || '👧';
-      document.getElementById('pinErrorMsg').innerText = '';
-      
-      updatePinDots();
-      document.getElementById('pinModal').classList.remove('hidden');
-    }
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <!-- Copy Button -->
+                        <button onclick="copyDelimaEmail()" title="Salin E-mel" class="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 active:bg-white/30 text-white border border-white/20 text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Salin E-mel</span>
+                        </button>
 
-    function closePinModal() {
-      document.getElementById('pinModal').classList.add('hidden');
-      selectedTargetStudent = null;
-      typedPin = '';
-    }
+                        <!-- Direct Google Login Link -->
+                        <button onclick="launchGoogleLogin()" title="Log Masuk Google" class="flex-1 sm:flex-none bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition">
+                            <i class="fa-brands fa-google text-slate-900"></i>
+                            <span>Log Masuk</span>
+                        </button>
+                    </div>
+                </div>
 
-    function pressPinNum(num) {
-      if (typedPin.length < 4) {
-        typedPin += num;
-        updatePinDots();
-
-        if (typedPin.length === 4) {
-          setTimeout(verifyPin, 150);
-        }
-      }
-    }
-
-    function backspacePin() {
-      if (typedPin.length > 0) {
-        typedPin = typedPin.slice(0, -1);
-        updatePinDots();
-      }
-    }
-
-    function clearPin() {
-      typedPin = '';
-      updatePinDots();
-    }
-
-    function updatePinDots() {
-      const dots = document.querySelectorAll('#pinDots .pin-dot');
-      dots.forEach((dot, index) => {
-        if (index < typedPin.length) {
-          dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-indigo-600 bg-indigo-600 scale-110 transition-transform';
-        } else {
-          dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-indigo-400 bg-slate-100';
-        }
-      });
-    }
-
-    function verifyPin() {
-      if (!selectedTargetStudent) return;
-
-      if (typedPin === selectedTargetStudent.pin) {
-        // Correct PIN
-        currentStudent = selectedTargetStudent;
-        closePinModal();
-        showStudentDashboard();
-        showToast(`Selamat datang, ${currentStudent.name}! 🎉`, 'success');
-      } else {
-        // Wrong PIN
-        const card = document.getElementById('pinModalCard');
-        card.classList.add('animate-shake');
-        document.getElementById('pinErrorMsg').innerText = 'PIN salah. Sila cuba lagi!';
-        
-        setTimeout(() => {
-          card.classList.remove('animate-shake');
-          clearPin();
-        }, 400);
-      }
-    }
-
-    // --- NAVIGATION LOGIC ---
-    function showStudentDashboard() {
-      document.getElementById('profileSelectionSection').classList.add('hidden');
-      document.getElementById('studentDashboardSection').classList.remove('hidden');
-      document.getElementById('studentDashboardSection').classList.add('flex');
-
-      document.getElementById('activeStudentName').innerText = `Selamat Datang, ${currentStudent.name}! 🎉`;
-      document.getElementById('activeGradeBadge').innerText = currentStudent.grade || 'Murid';
-      document.getElementById('activeAvatar').innerText = currentStudent.avatar || '👧';
-
-      renderApps();
-    }
-
-    function logoutStudent() {
-      currentStudent = null;
-      document.getElementById('studentDashboardSection').classList.add('hidden');
-      document.getElementById('studentDashboardSection').classList.remove('flex');
-      document.getElementById('profileSelectionSection').classList.remove('hidden');
-      showToast('Log keluar berjaya', 'info');
-    }
-
-    function goToHome() {
-      if (currentStudent) {
-        logoutStudent();
-      }
-    }
-
-    // --- ADMIN MODAL LOGIC ---
-    function openAdminPinModal() {
-      document.getElementById('adminPinInput').value = '';
-      document.getElementById('adminPinModal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('adminPinInput').focus(), 100);
-    }
-
-    function closeAdminPinModal() {
-      document.getElementById('adminPinModal').classList.add('hidden');
-    }
-
-    function verifyAdminPin() {
-      const input = document.getElementById('adminPinInput').value;
-      if (input === ADMIN_PIN) {
-        closeAdminPinModal();
-        openAdminDashboardModal();
-        showToast('Akses Mod Pentadbir dibenarkan', 'success');
-      } else {
-        showToast('PIN Pentadbir salah! (Gunakan 1234)', 'error');
-      }
-    }
-
-    function openAdminDashboardModal() {
-      renderAdminStudentsList();
-      document.getElementById('adminDashboardModal').classList.remove('hidden');
-    }
-
-    function closeAdminDashboardModal() {
-      document.getElementById('adminDashboardModal').classList.add('hidden');
-      renderProfileSelection();
-    }
-
-    function renderAdminStudentsList() {
-      const list = document.getElementById('adminStudentsList');
-      list.innerHTML = '';
-
-      if (students.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-400 italic">Tiada profil murid berdaftar.</p>`;
-        return;
-      }
-
-      students.forEach(student => {
-        const item = document.createElement('div');
-        item.className = 'flex justify-between items-center bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs';
-        
-        item.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">${student.avatar}</span>
-            <div>
-              <p class="font-bold text-slate-800">${student.name}</p>
-              <p class="text-[10px] text-slate-500">${student.grade} • PIN: <strong class="text-indigo-600">${student.pin}</strong></p>
             </div>
-          </div>
-          <button onclick="deleteStudent('${student.id}')" class="px-2.5 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-lg transition flex items-center gap-1">
-            <i class="fa-solid fa-trash"></i> Padam
-          </button>
-        `;
+        </section>
 
-        list.appendChild(item);
-      });
-    }
+        <!-- SEARCH & FILTER BAR -->
+        <section class="space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-compass"></i>
+                        </span>
+                        Portal & Aplikasi Pembelajaran
+                    </h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Klik pada butang untuk terus membuka aplikasi rasmi.</p>
+                </div>
 
-    function handleAddStudent(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('newStudentName').value.trim();
-      const grade = document.getElementById('newStudentGrade').value.trim();
-      const avatar = document.getElementById('newStudentAvatar').value;
-      const pin = document.getElementById('newStudentPin').value.trim();
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="filterApps()" placeholder="Cari nama aplikasi..." 
+                        class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-medium placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition">
+                </div>
+            </div>
 
-      if (!name || !grade || !pin || pin.length !== 4) {
-        showToast('Sila lengkapkan maklumat dengan 4-digit PIN!', 'amber');
-        return;
-      }
+            <!-- Category Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold">
+                <button onclick="setCategory('all')" id="cat-all" class="cat-btn px-4 py-2 rounded-xl bg-indigo-600 text-white shadow-sm transition">Semua Aplikasi</button>
+                <button onclick="setCategory('rasmi')" id="cat-rasmi" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Portal Rasmi KPM</button>
+                <button onclick="setCategory('tugasan')" id="cat-tugasan" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Bilik Darjah & Tugasan</button>
+                <button onclick="setCategory('interaktif')" id="cat-interaktif" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Kuiz & Permainan</button>
+                <button onclick="setCategory('kreatif')" id="cat-kreatif" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Kreativiti & Coding</button>
+            </div>
+        </section>
 
-      const newStudent = {
-        id: Date.now().toString(),
-        name,
-        grade,
-        avatar,
-        pin
-      };
+        <!-- APP GRID CONTAINER -->
+        <section id="appGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <!-- App Cards will be rendered dynamically by JS -->
+        </section>
 
-      students.push(newStudent);
-      saveStudents();
-      renderAdminStudentsList();
+        <!-- EMPTY SEARCH STATE -->
+        <div id="noResults" class="hidden text-center py-12 bg-white/60 rounded-3xl border border-dashed border-slate-300">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-700">Aplikasi tidak dijumpai</h3>
+            <p class="text-slate-500 text-xs mt-1">Cuba cari dengan kata kunci yang lain.</p>
+        </div>
 
-      // Reset form
-      document.getElementById('addStudentForm').reset();
-      showToast(`Profil ${name} berjaya ditambah!`, 'success');
-    }
+    </main>
 
-    function deleteStudent(id) {
-      const student = students.find(s => s.id === id);
-      if (!student) return;
+    <!-- MODAL: PARENT / TEACHER ADMIN DASHBOARD -->
+    <div id="parentModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 transition-all">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-amber-400 text-slate-900 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Mod Ibu Bapa / Guru</h3>
+                        <p class="text-xs text-slate-400">Pengurusan Profil & Akaun DELIMa Murid</p>
+                    </div>
+                </div>
+                <button onclick="closeParentModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-      customConfirm('Padam Profil', `Adakah anda pasti mahu memadam profil ${student.name}?`, () => {
-        students = students.filter(s => s.id !== id);
-        saveStudents();
-        renderAdminStudentsList();
-        showToast('Profil berjaya dipadam', 'info');
-      });
-    }
+            <!-- Modal Content Body -->
+            <div class="p-6 space-y-6">
 
-    function resetDefaultData() {
-      customConfirm('Reset Ke Data Asal', 'Adakah anda pasti mahu menetapkan semula semua profil murid ke sampel asal?', () => {
-        students = [...DEFAULT_STUDENTS];
-        saveStudents();
-        renderAdminStudentsList();
-        showToast('Data dikembalikan ke tetapan asal', 'success');
-      });
-    }
+                <!-- STEP 1: PIN LOCK SCREEN -->
+                <div id="pinLockSection" class="space-y-4 text-center py-4">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-lg">Masukkan PIN Kawalan Ibu Bapa</h4>
+                        <p class="text-slate-500 text-xs mt-1">Sila masukkan PIN 4-digit (PIN lalai: <span class="font-mono font-bold text-indigo-600">1234</span>)</p>
+                    </div>
 
-    // --- BIND KEYBOARD & INITIALIZATION ---
-    document.addEventListener('keydown', (e) => {
-      // Keypad support for PIN Modal
-      const pinModal = document.getElementById('pinModal');
-      if (!pinModal.classList.contains('hidden')) {
-        if (e.key >= '0' && e.key <= '9') {
-          pressPinNum(e.key);
-        } else if (e.key === 'Backspace') {
-          backspacePin();
-        } else if (e.key === 'Escape') {
-          closePinModal();
-        }
-      }
+                    <div class="flex justify-center gap-2 my-4">
+                        <input type="password" id="pinInput" maxlength="4" placeholder="••••" autocomplete="off"
+                            class="w-36 text-center text-2xl tracking-[0.5em] font-mono py-2 border-2 border-slate-200 rounded-2xl focus:border-indigo-600 focus:outline-none">
+                    </div>
 
-      // Enter key for Admin PIN modal
-      const adminPinModal = document.getElementById('adminPinModal');
-      if (!adminPinModal.classList.contains('hidden') && e.key === 'Enter') {
-        verifyAdminPin();
-      }
-    });
+                    <p id="pinErrorMsg" class="text-xs font-semibold text-rose-500 hidden">
+                        <i class="fa-solid fa-triangle-exclamation"></i> PIN tidak sah. Sila cuba lagi.
+                    </p>
 
-    // Start App
-    window.onload = function() {
-      loadStudents();
-      renderProfileSelection();
-    };
-  </script>
-</body>
-</html>
+                    <button onclick="verifyPin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl transition shadow-md shadow-indigo-200">
+                        Sahkan PIN
+                    </button>
+                </div>
+
+                <!-- STEP 2: ADMIN PANEL (Unlocked) -->
+                <div id="adminPanelSection" class="hidden space-y-6">
+                    
+                    <!-- Top Action Bar -->
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 py-1 px-2.5 rounded-full flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i> Akses Dibenarkan
+                        </span>
+                        <button onclick="lockParentMode()" class="text-xs font-bold text-slate-500 hover:text-rose-600">
+                            <i class="fa-solid fa-lock"></i> Kunci Semula
+                        </button>
+                    </div>
+
+                    <!-- Student List Management -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Senarai Murid Berdaftar</h4>
+                        <div id="adminStudentList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <!-- Rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Add New Student Form -->
+                    <form id="addStudentForm" onsubmit="handleAddStudent(event)" class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
+                        <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wider">+ Tambah Murid Baharu</h5>
+                        
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600 block mb-1">Nama Penuh / Nama Panggilan</label>
+                            <input type="text" id="newStudentName" required placeholder="Contoh: Aiman Hakim" 
+                                class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600 block mb-1">E-mel DELIMa KPM (@moe-dl.edu.my)</label>
+                            <input type="email" id="newStudentEmail" required placeholder="m-12345678@moe-dl.edu.my" 
+                                class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                            Simpan Profil Murid
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none">
+        <div id="toastIcon" class="text-emerald-400 text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <span id="toastMessage" class="text-xs font-bold">Mesej Notifikasi</span>
+    </div>
+
+    <script>
+        /* OFFICIAL LOGO URLS & APP DATA DEFINITION */
+        const APPS_DATA = [
+            {
+                id: 'delima',
+                name: 'Portal DELIMa KPM',
+                category: 'rasmi',
+                desc: 'Akses Portal Digital Educational Learning Initiative Malaysia rasmi.',
+                url: 'https://delima.moe-dl.edu.my/',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Coat_of_arms_of_Malaysia.svg/300px-Coat_of_arms_of_Malaysia.svg.png',
+                bgColor: 'bg-blue-50',
+                badge: 'Portal Rasmi KPM'
+            },
+            {
+                id: 'classroom',
+                name: 'Google Classroom',
+                category: 'tugasan',
+                desc: 'Tugasan sekolah, nota pembelajaran, dan bilik darjah dalam talian.',
+                url: 'https://classroom.google.com',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Google_Classroom_Logo.svg',
+                bgColor: 'bg-emerald-50',
+                badge: 'Tugasan Utama'
+            },
+            {
+                id: 'ytkids',
+                name: 'YouTube Kids',
+                category: 'interaktif',
+                desc: 'Video pendidikan terkurasi yang selamat dan menyeronokkan untuk murid.',
+                url: 'https://www.youtubekids.com',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/YouTube_Kids_Logo.svg',
+                bgColor: 'bg-red-50',
+                badge: 'Video Selamat'
+            },
+            {
+                id: 'scratch',
+                name: 'Scratch Coding',
+                category: 'kreatif',
+                desc: 'Belajar membina permainan interaktif dan animasi pergerakan mudah.',
+                url: 'https://scratch.mit.edu/projects/editor/',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Scratch_cat.svg',
+                bgColor: 'bg-amber-50',
+                badge: 'Pengaturcaraan'
+            },
+            {
