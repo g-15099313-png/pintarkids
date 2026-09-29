@@ -330,3 +330,344 @@
                 badge: 'Pengaturcaraan'
             },
             {
+                id: 'drive',
+                name: 'Google Drive',
+                category: 'tugasan',
+                desc: 'Simpan dan semak fail, lembaran kerja, serta dokumen pelajaran.',
+                url: 'https://drive.google.com',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg',
+                bgColor: 'bg-sky-50',
+                badge: 'Awan & Dokumen'
+            },
+            {
+                id: 'canva',
+                name: 'Canva Design',
+                category: 'kreatif',
+                desc: 'Cipta poster, lukisan grafik, peta minda, dan persembahan kreatif.',
+                url: 'https://www.canva.com',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg',
+                bgColor: 'bg-cyan-50',
+                badge: 'Reka Bentuk'
+            },
+            {
+                id: 'quizizz',
+                name: 'Quizizz Interactive',
+                category: 'interaktif',
+                desc: 'Latihan ulang kaji, kuiz bergambar, dan cabaran minda interaktif.',
+                url: 'https://quizizz.com/join',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Quizizz_Logo.svg',
+                bgColor: 'bg-purple-50',
+                badge: 'Kuiz Interaktif'
+            },
+            {
+                id: 'wordwall',
+                name: 'Wordwall Games',
+                category: 'interaktif',
+                desc: 'Permainan susun perkataan, roda padanan, dan kuiz bahasa sains.',
+                url: 'https://wordwall.net/ms',
+                logo: 'https://az779572.vo.msecnd.net/images/wordwall_logo_square.png',
+                bgColor: 'bg-indigo-50',
+                badge: 'Permainan Ilmu'
+            }
+        ];
+
+        /* DEFAULT INITIAL STATE */
+        const DEFAULT_STUDENTS = [
+            { id: '1', name: 'Aiman Hakim', email: 'm-10293847@moe-dl.edu.my', color: 'bg-indigo-600' },
+            { id: '2', name: 'Nur Alyaa', email: 'g-88372615@moe-dl.edu.my', color: 'bg-pink-600' }
+        ];
+
+        let students = JSON.parse(localStorage.getItem('pk_students')) || DEFAULT_STUDENTS;
+        let activeStudentId = localStorage.getItem('pk_active_student_id') || students[0]?.id || '1';
+        let parentPin = localStorage.getItem('pk_parent_pin') || '1234';
+        let isParentUnlocked = false;
+        let currentCategory = 'all';
+
+        window.onload = function() {
+            saveStudentsToStorage();
+            renderStudentsPills();
+            renderActiveStudentInfo();
+            renderAppGrid();
+        };
+
+        function saveStudentsToStorage() {
+            localStorage.setItem('pk_students', JSON.stringify(students));
+            localStorage.setItem('pk_active_student_id', activeStudentId);
+        }
+
+        /* PROFILE SWITCHING & RENDERING */
+        function selectStudent(id) {
+            activeStudentId = id;
+            saveStudentsToStorage();
+            renderStudentsPills();
+            renderActiveStudentInfo();
+            showToast('Profil ditukar ke ' + getActiveStudent().name, 'fa-user-check');
+        }
+
+        function getActiveStudent() {
+            return students.find(s => s.id === activeStudentId) || students[0] || { name: 'Tiada Murid', email: 'sila_tambah_murid' };
+        }
+
+        function renderStudentsPills() {
+            const container = document.getElementById('studentPillsList');
+            container.innerHTML = '';
+
+            students.forEach(student => {
+                const isActive = student.id === activeStudentId;
+                const pill = document.createElement('button');
+                pill.onclick = () => selectStudent(student.id);
+                pill.className = `flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition duration-200 shrink-0 border ${
+                    isActive 
+                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200' 
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                }`;
+
+                const initial = student.name.charAt(0).toUpperCase();
+                pill.innerHTML = `
+                    <span class="w-5 h-5 rounded-full ${isActive ? 'bg-white text-indigo-600' : 'bg-slate-300 text-slate-700'} flex items-center justify-center text-[10px] font-black">
+                        ${initial}
+                    </span>
+                    <span>${student.name}</span>
+                `;
+                container.appendChild(pill);
+            });
+        }
+
+        function renderActiveStudentInfo() {
+            const current = getActiveStudent();
+            
+            // Header
+            document.getElementById('headerStudentName').innerText = current.name;
+            document.getElementById('headerAvatar').innerText = current.name.charAt(0).toUpperCase();
+            
+            // Banner
+            document.getElementById('activeDelimaEmail').innerText = current.email;
+        }
+
+        /* COPY EMAIL & GOOGLE LOGIN FUNCTIONS */
+        function copyDelimaEmail() {
+            const current = getActiveStudent();
+            if (!current.email || current.email.includes('sila_tambah')) {
+                showToast('Sila tambah/pilih murid terlebih dahulu', 'fa-triangle-exclamation');
+                return;
+            }
+
+            // Copy logic
+            const tempInput = document.createElement('input');
+            tempInput.value = current.email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('E-mel DELIMa berjaya disalin!', 'fa-copy');
+        }
+
+        function launchGoogleLogin() {
+            const current = getActiveStudent();
+            const loginUrl = `https://accounts.google.com/AccountChooser?Email=${encodeURIComponent(current.email)}`;
+            window.open(loginUrl, '_blank');
+        }
+
+        /* RENDER APP CARDS WITH OFFICIAL LOGOS & FALLBACKS */
+        function renderAppGrid() {
+            const grid = document.getElementById('appGrid');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            const noResults = document.getElementById('noResults');
+            
+            grid.innerHTML = '';
+            let count = 0;
+
+            APPS_DATA.forEach(app => {
+                const matchesSearch = app.name.toLowerCase().includes(searchVal) || app.desc.toLowerCase().includes(searchVal);
+                const matchesCategory = currentCategory === 'all' || app.category === currentCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    count++;
+                    const card = document.createElement('div');
+                    card.className = 'app-card glass-card rounded-2xl p-5 border border-slate-200/80 hover:border-indigo-300 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between group';
+
+                    card.innerHTML = `
+                        <div>
+                            <!-- Header with Official Logo Container & Badge -->
+                            <div class="flex items-start justify-between gap-3 mb-4">
+                                <div class="logo-box w-16 h-16 rounded-2xl ${app.bgColor} border border-slate-200/60 p-2.5 flex items-center justify-center shrink-0">
+                                    <img src="${app.logo}" alt="${app.name}" class="w-full h-full object-contain filter drop-shadow-sm" 
+                                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/e2e8f0/475569?text=Logo';">
+                                </div>
+                                <span class="text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full border border-slate-200/60">
+                                    ${app.badge}
+                                </span>
+                            </div>
+
+                            <!-- App Title & Description -->
+                            <h3 class="font-bold text-slate-900 text-base mb-1.5 group-hover:text-indigo-600 transition">
+                                ${app.name}
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                                ${app.desc}
+                            </p>
+                        </div>
+
+                        <!-- Action Launch Button -->
+                        <div class="mt-5 pt-3 border-t border-slate-100">
+                            <a href="${app.url}" target="_blank" rel="noopener noreferrer" 
+                                class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-sm">
+                                <span>Buka Portal</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+
+            if (count === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        /* FILTER & SEARCH HANDLERS */
+        function filterApps() {
+            renderAppGrid();
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = 'cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
+            });
+            const activeBtn = document.getElementById(`cat-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = 'cat-btn px-4 py-2 rounded-xl bg-indigo-600 text-white shadow-sm transition';
+            }
+            renderAppGrid();
+        }
+
+        /* PARENT MODAL & ADMIN FUNCTIONS */
+        function openParentModal() {
+            document.getElementById('parentModal').classList.remove('hidden');
+            if (!isParentUnlocked) {
+                document.getElementById('pinLockSection').classList.remove('hidden');
+                document.getElementById('adminPanelSection').classList.add('hidden');
+                document.getElementById('pinInput').value = '';
+                document.getElementById('pinInput').focus();
+            } else {
+                showAdminPanel();
+            }
+        }
+
+        function closeParentModal() {
+            document.getElementById('parentModal').classList.add('hidden');
+        }
+
+        function verifyPin() {
+            const pinVal = document.getElementById('pinInput').value;
+            const errorMsg = document.getElementById('pinErrorMsg');
+
+            if (pinVal === parentPin) {
+                isParentUnlocked = true;
+                errorMsg.classList.add('hidden');
+                showAdminPanel();
+                showToast('Akses Mod Guru/Ibu Bapa Dibenarkan', 'fa-lock-open');
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('pinInput').value = '';
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('pinLockSection').classList.add('hidden');
+            document.getElementById('adminPanelSection').classList.remove('hidden');
+            renderAdminStudentList();
+        }
+
+        function lockParentMode() {
+            isParentUnlocked = false;
+            openParentModal();
+            showToast('Mod Pentadbir Dikunci', 'fa-lock');
+        }
+
+        function renderAdminStudentList() {
+            const container = document.getElementById('adminStudentList');
+            container.innerHTML = '';
+
+            students.forEach(student => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-xs';
+                item.innerHTML = `
+                    <div class="truncate mr-2">
+                        <div class="font-bold text-slate-800">${student.name}</div>
+                        <div class="font-mono text-[10px] text-slate-500 truncate">${student.email}</div>
+                    </div>
+                    <button onclick="deleteStudent('${student.id}')" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 hover:bg-rose-50 rounded-lg transition" title="Padam Murid">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function handleAddStudent(event) {
+            event.preventDefault();
+            const name = document.getElementById('newStudentName').value.trim();
+            const email = document.getElementById('newStudentEmail').value.trim();
+
+            if (!name || !email) return;
+
+            const newStudent = {
+                id: Date.now().toString(),
+                name: name,
+                email: email
+            };
+
+            students.push(newStudent);
+            activeStudentId = newStudent.id;
+            saveStudentsToStorage();
+
+            document.getElementById('addStudentForm').reset();
+            renderAdminStudentList();
+            renderStudentsPills();
+            renderActiveStudentInfo();
+
+            showToast(`Murid ${name} berjaya ditambah!`, 'fa-circle-check');
+        }
+
+        function deleteStudent(id) {
+            if (students.length <= 1) {
+                alert('Sekurang-kurangnya satu profil murid mesti kekal.');
+                return;
+            }
+            if (confirm('Adakah anda pasti mahu memadam profil murid ini?')) {
+                students = students.filter(s => s.id !== id);
+                if (activeStudentId === id) {
+                    activeStudentId = students[0].id;
+                }
+                saveStudentsToStorage();
+                renderAdminStudentList();
+                renderStudentsPills();
+                renderActiveStudentInfo();
+                showToast('Profil murid dipadam', 'fa-trash-can');
+            }
+        }
+
+        /* TOAST NOTIFICATION HELPER */
+        function showToast(msg, iconClass = 'fa-circle-check') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = msg;
+            toastIcon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
