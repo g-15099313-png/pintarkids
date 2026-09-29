@@ -73,7 +73,7 @@
 
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { font-size: 12px; font-weight: 800; color: #334155; display: block; margin-bottom: 6px; text-transform: uppercase; }
-    .form-input, .form-select { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; background: white; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; }
 
     .icon-picker-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 8px; }
     .icon-option { font-size: 26px; padding: 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: center; }
@@ -228,16 +228,6 @@
           <label>E-mel DELIMa KPM (`@moe-dl.edu.my`):</label>
           <input type="email" id="newStudentEmail" class="form-input" placeholder="m-12345678@moe-dl.edu.my">
         </div>
-
-        <div class="form-group">
-          <label>Slot Akaun Google Pelayar (Pilihan):</label>
-          <select id="newStudentGoogleIndex" class="form-select">
-            <option value="auto">Automatik (Guna sesi pelayar sedia ada)</option>
-            <option value="0">Akaun Pertama (/u/0/)</option>
-            <option value="1">Akaun Kedua (/u/1/)</option>
-            <option value="2">Akaun Ketiga (/u/2/)</option>
-          </select>
-        </div>
         
         <div class="form-group">
           <label>PIN 4-Angka Murid:</label>
@@ -268,18 +258,18 @@
 
   <script>
     const defaultStudents = [
-      { id: 1, name: 'Aina', email: 'm-10293847@moe-dl.edu.my', googleIndex: 'auto', pin: '1234', icon: '🐱', color: '#fbcfe8' },
-      { id: 2, name: 'Adam', email: 'm-56473829@moe-dl.edu.my', googleIndex: 'auto', pin: '5678', icon: '🤖', color: '#bfdbfe' },
-      { id: 3, name: 'Maya', email: 'm-99887766@moe-dl.edu.my', googleIndex: 'auto', pin: '1122', icon: '🚀', color: '#bbf7d0' }
+      { id: 1, name: 'Aina', email: 'm-10293847@moe-dl.edu.my', pin: '1234', icon: '🐱', color: '#fbcfe8' },
+      { id: 2, name: 'Adam', email: 'm-56473829@moe-dl.edu.my', pin: '5678', icon: '🤖', color: '#bfdbfe' },
+      { id: 3, name: 'Maya', email: 'm-99887766@moe-dl.edu.my', pin: '1122', icon: '🚀', color: '#bbf7d0' }
     ];
 
-    let students = JSON.parse(localStorage.getItem('pintarkids_v4_apps')) || defaultStudents;
+    let students = JSON.parse(localStorage.getItem('pintarkids_v5_apps')) || defaultStudents;
     let selectedStudent = null;
     let enteredPin = "";
     let chosenAvatarIcon = "🐱";
 
     function saveStudents() {
-      localStorage.setItem('pintarkids_v4_apps', JSON.stringify(students));
+      localStorage.setItem('pintarkids_v5_apps', JSON.stringify(students));
     }
 
     function renderProfiles() {
@@ -350,14 +340,15 @@
       document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! ' + (student.icon || '👋');
       document.getElementById('dashDelimaEmail').innerText = student.email || 'Tiada E-mel Berdaftar';
 
-      // Menentukan pautan Google Classroom mengikut sesi pelayar
-      let classroomUrl = "https://classroom.google.com";
-      if (student.googleIndex && student.googleIndex !== 'auto') {
-        classroomUrl = `https://classroom.google.com/u/${student.googleIndex}/h`;
+      // PENAMBAHAN PENTING: Pautan pintar Google Classroom dengan parameter authuser=email
+      // Ini memaksa Google bertukar terus ke akaun murid tanpa mengganggu akaun utama browser!
+      if (student.email && student.email.includes('@')) {
+        document.getElementById('gcBtn').href = "https://classroom.google.com/?authuser=" + encodeURIComponent(student.email);
+        document.getElementById('delimaBtn').href = "https://accounts.google.com/AccountChooser?continue=https://delima.moe-dl.edu.my&Email=" + encodeURIComponent(student.email);
+      } else {
+        document.getElementById('gcBtn').href = "https://classroom.google.com";
+        document.getElementById('delimaBtn').href = "https://delima.moe-dl.edu.my";
       }
-
-      document.getElementById('delimaBtn').href = "https://delima.moe-dl.edu.my";
-      document.getElementById('gcBtn').href = classroomUrl;
     }
 
     function copyEmail() {
@@ -405,7 +396,6 @@
     function addNewStudent() {
       const name = document.getElementById('newStudentName').value.trim();
       const email = document.getElementById('newStudentEmail').value.trim();
-      const googleIndex = document.getElementById('newStudentGoogleIndex').value;
       const pin = document.getElementById('newStudentPin').value.trim();
 
       if (!name || !pin) {
@@ -420,7 +410,6 @@
         id: Date.now(),
         name: name,
         email: email,
-        googleIndex: googleIndex,
         pin: pin,
         icon: chosenAvatarIcon,
         color: randomColor
