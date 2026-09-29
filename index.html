@@ -9,19 +9,19 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: linear-gradient(135deg, #f0f7ff 0%, #e0eefd 100%); min-height: 100vh; color: #1e293b; padding-bottom: 40px; }
     
-    /* Header */
+    /* Header Navbar */
     header { background: #ffffff; padding: 16px 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo { width: 42px; height: 42px; background: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: bold; }
+    .brand-logo { width: 44px; height: 44px; background: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
     .brand-title { font-size: 20px; font-weight: 800; color: #1e3a8a; }
     .brand-subtitle { font-size: 12px; color: #64748b; font-weight: 600; }
     
     .nav-actions { display: flex; align-items: center; gap: 12px; }
-    .user-badge { display: flex; align-items: center; gap: 10px; background: #eff6ff; border: 1px solid #bfdbfe; padding: 6px 14px; border-radius: 30px; }
-    .user-avatar-mini { width: 28px; height: 28px; border-radius: 50%; background: #3b82f6; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    .user-badge { display: flex; align-items: center; gap: 10px; background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 6px 14px; border-radius: 30px; }
+    .user-avatar-mini { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .user-name-mini { font-size: 14px; font-weight: 700; color: #1e40af; }
     
-    .btn { padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn { padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
     .btn-primary { background: #2563eb; color: white; }
     .btn-primary:hover { background: #1d4ed8; }
     .btn-danger { background: #ef4444; color: white; }
@@ -34,60 +34,67 @@
 
     /* Profile Selection Screen */
     .welcome-banner { text-align: center; margin-bottom: 35px; }
-    .welcome-title { font-size: 30px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .welcome-title { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
     .welcome-sub { font-size: 16px; color: #64748b; }
 
-    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; justify-content: center; }
-    .profile-card { background: white; border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.25s ease; border: 2px solid transparent; }
-    .profile-card:hover { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
-    .avatar-circle { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 800; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-    .profile-name { font-size: 18px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
-    .profile-email-tag { font-size: 11px; background: #f1f5f9; color: #64748b; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; justify-content: center; }
+    .profile-card { background: white; border-radius: 24px; padding: 28px 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.25s ease; border: 3px solid transparent; }
+    .profile-card:hover { transform: translateY(-8px); box-shadow: 0 18px 35px rgba(59, 130, 246, 0.18); border-color: #3b82f6; }
+    
+    .avatar-circle { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 48px; box-shadow: 0 8px 20px rgba(0,0,0,0.12); border: 4px solid #ffffff; }
+    .profile-name { font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+    .profile-email-tag { font-size: 12px; background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 8px; display: inline-block; font-weight: 600; }
 
     /* Dashboard Screen */
-    .dashboard-header { background: white; border-radius: 20px; padding: 24px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .delima-box { background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px 20px; border-radius: 14px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+    .dashboard-header { background: white; border-radius: 24px; padding: 24px 28px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+    .delima-box { background: #f0fdf4; border: 2px solid #bbf7d0; padding: 16px 20px; border-radius: 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     .delima-info { display: flex; flex-direction: column; }
     .delima-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #15803d; letter-spacing: 0.5px; }
     .delima-email { font-size: 15px; font-weight: 700; color: #166534; word-break: break-all; }
 
     .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-    .app-card { background: white; border-radius: 18px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #f1f5f9; }
-    .app-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.08); border-color: #cbd5e1; }
-    .app-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-    .app-icon-wrapper { width: 52px; height: 52px; border-radius: 14px; background: #f8fafc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
-    .app-icon-wrapper svg { width: 34px; height: 34px; }
+    .app-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; border: 1.5px solid #f1f5f9; }
+    .app-card:hover { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+    .app-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .app-icon-wrapper { width: 54px; height: 54px; border-radius: 16px; background: #f8fafc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+    .app-icon-wrapper svg { width: 36px; height: 36px; }
     .app-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
-    .app-category { font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; }
+    .app-category { font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; }
     .app-desc { font-size: 12px; color: #64748b; line-height: 1.4; margin-bottom: 18px; }
-    .app-btn { width: 100%; padding: 10px; background: #0f172a; color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 13px; transition: background 0.2s; display: block; }
+    .app-btn { width: 100%; padding: 11px; background: #0f172a; color: white; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 13px; transition: background 0.2s; display: block; }
     .app-btn:hover { background: #2563eb; }
 
     /* Modals */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: white; width: 100%; max-width: 440px; border-radius: 24px; padding: 28px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; animation: popIn 0.2s ease-out; }
-    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-box { background: white; width: 100%; max-width: 460px; border-radius: 28px; padding: 30px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; animation: popIn 0.2s ease-out; max-height: 90vh; overflow-y: auto; }
+    @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .modal-title { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
     .modal-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
 
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { font-size: 12px; font-weight: 800; color: #334155; display: block; margin-bottom: 6px; text-transform: uppercase; }
-    .form-input { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; }
     .form-input:focus { border-color: #2563eb; }
 
+    /* Icon Picker Grid */
+    .icon-picker-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 8px; }
+    .icon-option { font-size: 26px; padding: 8px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.15s; }
+    .icon-option:hover, .icon-option.selected { border-color: #2563eb; background: #eff6ff; transform: scale(1.1); }
+
+    /* Numpad */
     .pin-display { font-size: 32px; font-weight: 800; letter-spacing: 12px; text-align: center; margin: 15px 0; color: #1e3a8a; }
-    .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-    .num-btn { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 12px; font-size: 20px; font-weight: 800; color: #1e293b; cursor: pointer; transition: all 0.15s; }
+    .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+    .num-btn { background: #f8fafc; border: 1.5px solid #e2e8f0; padding: 14px; border-radius: 14px; font-size: 22px; font-weight: 800; color: #1e293b; cursor: pointer; transition: all 0.15s; }
     .num-btn:active { background: #e2e8f0; transform: scale(0.95); }
 
-    .student-manage-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8fafc; border-radius: 12px; margin-bottom: 8px; }
+    .student-manage-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8fafc; border-radius: 14px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Navbar -->
   <header>
     <div class="brand">
       <div class="brand-logo">🚀</div>
@@ -98,9 +105,9 @@
     </div>
     <div class="nav-actions">
       <div id="activeUserBadge" class="user-badge" style="display: none;">
-        <div id="activeAvatar" class="user-avatar-mini">A</div>
+        <div id="activeAvatar" class="user-avatar-mini">🐱</div>
         <span id="activeUserName" class="user-name-mini">Nama Murid</span>
-        <button onclick="logoutStudent()" class="btn btn-danger" style="padding: 4px 10px; font-size: 12px; border-radius: 20px;">🚪 Log Keluar</button>
+        <button onclick="logoutStudent()" class="btn btn-danger" style="padding: 5px 12px; font-size: 12px; border-radius: 20px;">🚪 Log Keluar</button>
       </div>
       <button onclick="openParentModal()" class="btn btn-secondary">⚙️ Mod Ibu Bapa / Guru</button>
     </div>
@@ -112,7 +119,7 @@
     <div id="profileSelectionView">
       <div class="welcome-banner">
         <h1 class="welcome-title">Selamat Datang, Adik! 👋</h1>
-        <p class="welcome-sub">Pilih nama dan gambar anda di bawah untuk mula belajar</p>
+        <p class="welcome-sub">Pilih nama dan ikon anda di bawah untuk mula belajar</p>
       </div>
       <div id="profilesContainer" class="profiles-grid"></div>
     </div>
@@ -147,7 +154,7 @@
               <div class="app-icon-wrapper">
                 <svg viewBox="0 0 100 100">
                   <rect width="100" height="100" rx="20" fill="#002B7F"/>
-                  <rect y="33.3" width="100" height="33.3" fill="#RED" fill="#CC0000"/>
+                  <rect y="33.3" width="100" height="33.3" fill="#CC0000"/>
                   <rect y="66.6" width="100" height="33.3" fill="#FFFFFF"/>
                   <polygon points="0,0 50,50 0,100" fill="#002B7F"/>
                   <path d="M 15 50 A 12 12 0 1 0 32 50 Z" fill="#FFD700"/>
@@ -342,7 +349,7 @@
         <button class="num-btn" style="background: #dcfce7; color: #15803d;" onclick="submitPin()">OK</button>
       </div>
       
-      <button onclick="closeModal('studentPinModal')" class="btn btn-secondary" style="margin-top: 15px; width: 100%;">Batal</button>
+      <button onclick="closeModal('studentPinModal')" class="btn btn-secondary" style="margin-top: 18px; width: 100%;">Batal</button>
     </div>
   </div>
 
@@ -350,7 +357,7 @@
   <div id="parentModal" class="modal-overlay">
     <div class="modal-box">
       <h3 class="modal-title">Mod Guru / Ibu Bapa</h3>
-      <p class="modal-sub">Pengurusan Profil Murid Sekolah</p>
+      <p class="modal-sub">Pengurusan Profil & Ikon Murid Sekolah</p>
 
       <div id="parentAuthSection">
         <div class="form-group">
@@ -361,22 +368,44 @@
       </div>
 
       <div id="parentControlSection" style="display: none;">
-        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Tambah Profil Murid Baharu</h4>
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #1e293b;">+ Tambah Profil Murid Baharu</h4>
+        
         <div class="form-group">
           <label>Nama Murid:</label>
-          <input type="text" id="newStudentName" class="form-input" placeholder="Contoh: Aiman Hakim">
+          <input type="text" id="newStudentName" class="form-input" placeholder="Contoh: Aina">
         </div>
+        
         <div class="form-group">
           <label>E-mel DELIMa KPM (`@moe-dl.edu.my`):</label>
           <input type="email" id="newStudentEmail" class="form-input" placeholder="m-12345678@moe-dl.edu.my">
         </div>
+        
         <div class="form-group">
           <label>PIN 4-Angka Murid:</label>
           <input type="password" id="newStudentPin" class="form-input" placeholder="1234" maxlength="4">
         </div>
-        <button onclick="addNewStudent()" class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">+ Simpan Profil Murid</button>
 
-        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Senarai Murid Berdaftar</h4>
+        <div class="form-group">
+          <label>Pilih Ikon Profil Murid:</label>
+          <div class="icon-picker-grid">
+            <div class="icon-option selected" onclick="selectAvatarIcon(this, '🐱')">🐱</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🐶')">🐶</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🦊')">🦊</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🤖')">🤖</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🚀')">🚀</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '👑')">👑</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🐻')">🐻</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🦁')">🦁</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🐯')">🐯</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🐼')">🐼</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🌟')">🌟</div>
+            <div class="icon-option" onclick="selectAvatarIcon(this, '🎮')">🎮</div>
+          </div>
+        </div>
+
+        <button onclick="addNewStudent()" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 24px;">+ Simpan Profil Murid</button>
+
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #1e293b;">Senarai Murid Berdaftar</h4>
         <div id="studentManageList"></div>
       </div>
 
@@ -385,19 +414,20 @@
   </div>
 
   <script>
-    // Data lalai murid
+    // Data lalai murid dengan ikon & warna terang yang dijamin tidak kosong
     const defaultStudents = [
-      { id: 1, name: 'Aiman Hakim', email: 'm-10293847@moe-dl.edu.my', pin: '1234', color: '#3b82f6' },
-      { id: 2, name: 'Nur Aina', email: 'm-56473829@moe-dl.edu.my', pin: '5678', color: '#ec4899' },
-      { id: 3, name: 'Adam Haris', email: 'm-99887766@moe-dl.edu.my', pin: '1122', color: '#10b981' }
+      { id: 1, name: 'Aina', email: 'm-10293847@moe-dl.edu.my', pin: '1234', icon: '🐱', color: '#fbcfe8' },
+      { id: 2, name: 'Adam', email: 'm-56473829@moe-dl.edu.my', pin: '5678', icon: '🤖', color: '#bfdbfe' },
+      { id: 3, name: 'Maya', email: 'm-99887766@moe-dl.edu.my', pin: '1122', icon: '🚀', color: '#bbf7d0' }
     ];
 
-    let students = JSON.parse(localStorage.getItem('pintarkids_students')) || defaultStudents;
+    let students = JSON.parse(localStorage.getItem('pintarkids_students_v2')) || defaultStudents;
     let selectedStudent = null;
     let enteredPin = "";
+    let chosenAvatarIcon = "🐱";
 
     function saveStudents() {
-      localStorage.setItem('pintarkids_students', JSON.stringify(students));
+      localStorage.setItem('pintarkids_students_v2', JSON.stringify(students));
     }
 
     function renderProfiles() {
@@ -405,12 +435,14 @@
       container.innerHTML = '';
 
       students.forEach(s => {
-        const initial = s.name.charAt(0).toUpperCase();
+        const iconSymbol = s.icon || '🐱';
+        const bgColor = s.color || '#bfdbfe';
+
         const card = document.createElement('div');
         card.className = 'profile-card';
         card.onclick = () => selectStudent(s);
         card.innerHTML = `
-          <div class="avatar-circle" style="background-color: ${s.color || '#3b82f6'};">${initial}</div>
+          <div class="avatar-circle" style="background-color: ${bgColor};">${iconSymbol}</div>
           <div class="profile-name">${s.name}</div>
           <div class="profile-email-tag">${s.email ? 'DELIMa Ready' : 'Tiada E-mel'}</div>
         `;
@@ -422,7 +454,7 @@
       selectedStudent = student;
       enteredPin = "";
       updatePinDisplay();
-      document.getElementById('modalStudentName').innerText = 'Selamat Datang, ' + student.name + '!';
+      document.getElementById('modalStudentName').innerText = 'Selamat Datang, ' + student.name + '! ' + (student.icon || '👋');
       document.getElementById('studentPinModal').classList.add('active');
     }
 
@@ -462,11 +494,11 @@
       // Set header user badge
       document.getElementById('activeUserBadge').style.display = 'flex';
       document.getElementById('activeUserName').innerText = student.name;
-      document.getElementById('activeAvatar').innerText = student.name.charAt(0).toUpperCase();
-      document.getElementById('activeAvatar').style.background = student.color || '#3b82f6';
+      document.getElementById('activeAvatar').innerText = student.icon || '🐱';
+      document.getElementById('activeAvatar').style.background = student.color || '#bfdbfe';
 
       // Set dashboard info
-      document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! 👋';
+      document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! ' + (student.icon || '👋');
       document.getElementById('dashDelimaEmail').innerText = student.email || 'Tiada E-mel Berdaftar';
       
       const loginBtn = document.getElementById('delimaLoginBtn');
@@ -488,7 +520,7 @@
       }
     }
 
-    /* Modal Pentadbir */
+    /* Modal Pentadbir & Icon Picker */
     function openParentModal() {
       document.getElementById('parentAuthSection').style.display = 'block';
       document.getElementById('parentControlSection').style.display = 'none';
@@ -507,6 +539,12 @@
       }
     }
 
+    function selectAvatarIcon(element, icon) {
+      document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      chosenAvatarIcon = icon;
+    }
+
     function addNewStudent() {
       const name = document.getElementById('newStudentName').value.trim();
       const email = document.getElementById('newStudentEmail').value.trim();
@@ -517,7 +555,7 @@
         return;
       }
 
-      const colors = ['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+      const colors = ['#fbcfe8', '#bfdbfe', '#bbf7d0', '#fef08a', '#e9d5ff', '#fed7aa'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
       const newStudent = {
@@ -525,6 +563,7 @@
         name: name,
         email: email,
         pin: pin,
+        icon: chosenAvatarIcon,
         color: randomColor
       };
 
@@ -536,7 +575,7 @@
       document.getElementById('newStudentName').value = '';
       document.getElementById('newStudentEmail').value = '';
       document.getElementById('newStudentPin').value = '';
-      alert('Profil murid berjaya ditambah!');
+      alert('Profil murid ' + name + ' berjaya ditambah!');
     }
 
     function deleteStudent(id) {
@@ -556,10 +595,11 @@
         item.className = 'student-manage-item';
         item.innerHTML = `
           <div>
+            <span style="font-size: 20px; margin-right: 6px;">${s.icon || '🐱'}</span>
             <strong>${s.name}</strong> (PIN: ${s.pin})<br>
             <small style="color: #64748b;">${s.email || 'Tiada E-mel'}</small>
           </div>
-          <button onclick="deleteStudent(${s.id})" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Padam</button>
+          <button onclick="deleteStudent(${s.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">Padam</button>
         `;
         list.appendChild(item);
       });
