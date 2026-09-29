@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PintarKids - Portal DELIMa & Google Classroom</title>
+  <title>PintarKids Launcher - DELIMa & Google Classroom</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: linear-gradient(135deg, #f0f7ff 0%, #e0eefd 100%); min-height: 100vh; color: #1e293b; padding-bottom: 40px; }
     
+    /* Header Navbar */
     header { background: #ffffff; padding: 16px 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-logo { width: 44px; height: 44px; background: #2563eb; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
@@ -30,11 +31,12 @@
 
     .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
 
+    /* Welcome Banner & Profiles Grid */
     .welcome-banner { text-align: center; margin-bottom: 35px; }
     .welcome-title { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
     .welcome-sub { font-size: 16px; color: #64748b; }
 
-    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; justify-content: center; }
+    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; justify-content: center; }
     .profile-card { background: white; border-radius: 24px; padding: 28px 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.25s ease; border: 3px solid transparent; }
     .profile-card:hover { transform: translateY(-8px); box-shadow: 0 18px 35px rgba(59, 130, 246, 0.18); border-color: #2563eb; }
     
@@ -43,27 +45,30 @@
     .profile-email-tag { font-size: 12px; background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 8px; display: inline-block; font-weight: 600; }
 
     /* Dashboard Header & Cards */
-    .dashboard-header { background: white; border-radius: 24px; padding: 24px 28px; margin-bottom: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); text-align: center; }
-    .delima-email-box { background: #f0fdf4; border: 2px solid #bbf7d0; padding: 14px 20px; border-radius: 16px; margin-top: 14px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
+    .dashboard-header { background: white; border-radius: 24px; padding: 28px; margin-bottom: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.03); text-align: center; }
+    .delima-email-box { background: #f0fdf4; border: 2px solid #bbf7d0; padding: 16px 20px; border-radius: 16px; margin-top: 16px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
     .delima-email-text { font-size: 16px; font-weight: 800; color: #166534; word-break: break-all; }
 
-    .main-apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    .main-app-card { background: white; border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.04); border: 2px solid #e2e8f0; transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; }
+    .mobile-tip-box { background: #fffbebfb; border: 1.5px solid #fde68a; padding: 12px 16px; border-radius: 14px; font-size: 13px; color: #92400e; margin-bottom: 24px; text-align: left; line-height: 1.5; }
+
+    /* Main Apps Grid - 2 Apps Only */
+    .main-apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+    .main-app-card { background: white; border-radius: 24px; padding: 36px 28px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.04); border: 2px solid #e2e8f0; transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; }
     .main-app-card:hover { transform: translateY(-6px); box-shadow: 0 18px 35px rgba(0,0,0,0.08); border-color: #2563eb; }
     
-    .app-icon-box { width: 80px; height: 80px; margin: 0 auto 18px; border-radius: 20px; display: flex; align-items: center; justify-content: center; }
-    .app-icon-box svg { width: 60px; height: 60px; }
+    .app-icon-box { width: 88px; height: 88px; margin: 0 auto 20px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: #f8fafc; border: 1px solid #f1f5f9; }
+    .app-icon-box svg { width: 64px; height: 64px; }
     
-    .app-title { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
-    .app-desc { font-size: 13px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
+    .app-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .app-desc { font-size: 14px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
     
-    .app-launch-btn { display: block; width: 100%; padding: 15px; border-radius: 14px; font-weight: 800; font-size: 15px; text-decoration: none; color: white; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .app-launch-btn { display: block; width: 100%; padding: 16px; border-radius: 14px; font-weight: 800; font-size: 16px; text-decoration: none; color: white; transition: background 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
     .btn-delima { background: #002B7F; }
     .btn-delima:hover { background: #001f5c; }
     .btn-classroom { background: #0F9D58; }
     .btn-classroom:hover { background: #0b7a44; }
 
-    /* Modal Styling */
+    /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
     .modal-overlay.active { display: flex; }
     .modal-box { background: white; width: 100%; max-width: 460px; border-radius: 28px; padding: 30px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
@@ -88,13 +93,13 @@
 </head>
 <body>
 
-  <!-- Navbar Header -->
+  <!-- Navigation Bar -->
   <header>
     <div class="brand">
       <div class="brand-logo">🇲🇾</div>
       <div>
-        <div class="brand-title">PintarKids</div>
-        <div class="brand-subtitle">Pelancar Portal DELIMa & Classroom</div>
+        <div class="brand-title">PintarKids Launcher</div>
+        <div class="brand-subtitle">Pelancar Portal DELIMa & Google Classroom</div>
       </div>
     </div>
     <div class="nav-actions">
@@ -103,7 +108,7 @@
         <span id="activeUserName" class="user-name-mini">Nama Murid</span>
         <button onclick="logoutStudent()" class="btn btn-danger" style="padding: 5px 12px; font-size: 12px; border-radius: 20px;">🚪 Tukar Profil</button>
       </div>
-      <button onclick="openParentModal()" class="btn btn-secondary">⚙️ Tetapan Guru/Ibu Bapa</button>
+      <button onclick="openParentModal()" class="btn btn-secondary">⚙️ Mod Guru / Ibu Bapa</button>
     </div>
   </header>
 
@@ -112,23 +117,28 @@
     <!-- Skrin 1: Pilih Profil Murid -->
     <div id="profileSelectionView">
       <div class="welcome-banner">
-        <h1 class="welcome-title">Selamat Datang, Adik! 👋</h1>
-        <p class="welcome-sub">Pilih nama dan ikon anda di bawah untuk mula belajar</p>
+        <h1 class="welcome-title">Selamat Datang, Murid-Murid! 👋</h1>
+        <p class="welcome-sub">Pilih profil anda di bawah untuk mula belajar hari ini</p>
       </div>
       <div id="profilesContainer" class="profiles-grid"></div>
     </div>
 
-    <!-- Skrin 2: Dashboard (Portal DELIMa & Google Classroom) -->
+    <!-- Skrin 2: Dashboard (Portal DELIMa & Google Classroom Sahaja) -->
     <div id="studentDashboardView" style="display: none;">
       <div class="dashboard-header">
         <h2 id="dashGreeting" style="font-size: 26px; font-weight: 800; color: #0f172a;">Selamat Belajar!</h2>
-        <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Pilih aplikasi pembelajaran yang ingin anda buka:</p>
+        <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Pilih portal pembelajaran yang ingin anda buka:</p>
 
         <div class="delima-email-box">
           <span style="font-size: 11px; font-weight: 800; color: #15803d; text-transform: uppercase;">Akaun Google DELIMa Anda:</span>
           <div id="dashDelimaEmail" class="delima-email-text">murid@moe-dl.edu.my</div>
-          <button onclick="copyEmail()" class="btn btn-secondary" style="padding: 5px 12px; font-size: 12px; margin-top: 2px;">📋 Salin E-mel</button>
+          <button onclick="copyEmail()" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px; margin-top: 4px;">📋 Salin E-mel</button>
         </div>
+      </div>
+
+      <!-- Panduan Elak Ralat 400 di Telefon -->
+      <div class="mobile-tip-box">
+        💡 <strong>Nota Telefon Pintar:</strong> Jika anda membuka dari WhatsApp/Telegram dan mendapat ralat <em>"400. That’s an error"</em>, sila tekan butang <strong>"Open in Chrome / Safari" (🌐)</strong> di sudut bawah/atas telefon anda.
       </div>
 
       <div class="main-apps-grid">
@@ -146,7 +156,7 @@
               </svg>
             </div>
             <div class="app-title">Portal DELIMa</div>
-            <p class="app-desc">Akses portal rasmi Digital Educational Learning Initiative Malaysia KPM.</p>
+            <p class="app-desc">Akses portal rasmi Digital Educational Learning Initiative Malaysia KPM untuk buku teks digital dan aplikasi KPM.</p>
           </div>
           <a id="delimaBtn" href="https://delima.moe-dl.edu.my" target="_blank" class="app-launch-btn btn-delima">
             🚀 Buka Portal DELIMa ↗
@@ -166,7 +176,7 @@
               </svg>
             </div>
             <div class="app-title">Google Classroom</div>
-            <p class="app-desc">Lihat nota, hantar kerja sekolah, dan berkomunikasi dengan guru-guru anda.</p>
+            <p class="app-desc">Semak tugasan kelas, muat naik kerja sekolah, dan berkomunikasi dengan guru-guru anda secara terus.</p>
           </div>
           <a id="gcBtn" href="https://classroom.google.com" target="_blank" class="app-launch-btn btn-classroom">
             📚 Buka Google Classroom ↗
@@ -182,7 +192,7 @@
   <div id="studentPinModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <h3 id="modalStudentName" class="modal-title">Selamat Datang!</h3>
-      <p class="modal-sub">Masukkan PIN 4-Angka Murid</p>
+      <p class="modal-sub">Masukkan PIN 4-Angka Murid Anda</p>
       <div id="pinDisplay" class="pin-display">••••</div>
       <div class="numpad">
         <button class="num-btn" onclick="pressPin('1')">1</button>
@@ -202,11 +212,11 @@
     </div>
   </div>
 
-  <!-- Modal Tetapan Guru/Ibu Bapa -->
+  <!-- Modal Mod Guru & Ibu Bapa -->
   <div id="parentModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 class="modal-title">Tetapan Guru / Ibu Bapa</h3>
-      <p class="modal-sub">Pengurusan Profil & E-mel DELIMa Murid</p>
+      <h3 class="modal-title">Tetapan Guru & Ibu Bapa</h3>
+      <p class="modal-sub">Urus Profil Murid & E-mel DELIMa</p>
 
       <div id="parentAuthSection">
         <div class="form-group">
@@ -221,7 +231,7 @@
         
         <div class="form-group">
           <label>Nama Murid:</label>
-          <input type="text" id="newStudentName" class="form-input" placeholder="Contoh: Aina">
+          <input type="text" id="newStudentName" class="form-input" placeholder="Contoh: Nur Aina">
         </div>
         
         <div class="form-group">
@@ -246,7 +256,7 @@
           </div>
         </div>
 
-        <button onclick="addNewStudent()" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 20px;">+ Simpan Profil</button>
+        <button onclick="addNewStudent()" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 20px;">+ Simpan Profil Murid</button>
 
         <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #1e293b;">Senarai Murid Berdaftar</h4>
         <div id="studentManageList"></div>
@@ -257,19 +267,20 @@
   </div>
 
   <script>
+    // Data Asal Contoh
     const defaultStudents = [
       { id: 1, name: 'Aina', email: 'm-10293847@moe-dl.edu.my', pin: '1234', icon: '🐱', color: '#fbcfe8' },
       { id: 2, name: 'Adam', email: 'm-56473829@moe-dl.edu.my', pin: '5678', icon: '🤖', color: '#bfdbfe' },
       { id: 3, name: 'Maya', email: 'm-99887766@moe-dl.edu.my', pin: '1122', icon: '🚀', color: '#bbf7d0' }
     ];
 
-    let students = JSON.parse(localStorage.getItem('pintarkids_v5_apps')) || defaultStudents;
+    let students = JSON.parse(localStorage.getItem('pintarkids_v8_apps')) || defaultStudents;
     let selectedStudent = null;
     let enteredPin = "";
     let chosenAvatarIcon = "🐱";
 
     function saveStudents() {
-      localStorage.setItem('pintarkids_v5_apps', JSON.stringify(students));
+      localStorage.setItem('pintarkids_v8_apps', JSON.stringify(students));
     }
 
     function renderProfiles() {
@@ -283,7 +294,7 @@
         card.innerHTML = `
           <div class="avatar-circle" style="background-color: ${s.color || '#bfdbfe'};">${s.icon || '🐱'}</div>
           <div class="profile-name">${s.name}</div>
-          <div class="profile-email-tag">Akaun DELIMa</div>
+          <div class="profile-email-tag">Akaun DELIMa KPM</div>
         `;
         container.appendChild(card);
       });
@@ -330,32 +341,24 @@
       document.getElementById('profileSelectionView').style.display = 'none';
       document.getElementById('studentDashboardView').style.display = 'block';
 
-      // Set badge di header
       document.getElementById('activeUserBadge').style.display = 'flex';
       document.getElementById('activeUserName').innerText = student.name;
       document.getElementById('activeAvatar').innerText = student.icon || '🐱';
       document.getElementById('activeAvatar').style.background = student.color || '#bfdbfe';
 
-      // Set teks ucapan & e-mel
       document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! ' + (student.icon || '👋');
       document.getElementById('dashDelimaEmail').innerText = student.email || 'Tiada E-mel Berdaftar';
 
-      // PENAMBAHAN PENTING: Pautan pintar Google Classroom dengan parameter authuser=email
-      // Ini memaksa Google bertukar terus ke akaun murid tanpa mengganggu akaun utama browser!
-      if (student.email && student.email.includes('@')) {
-        document.getElementById('gcBtn').href = "https://classroom.google.com/?authuser=" + encodeURIComponent(student.email);
-        document.getElementById('delimaBtn').href = "https://accounts.google.com/AccountChooser?continue=https://delima.moe-dl.edu.my&Email=" + encodeURIComponent(student.email);
-      } else {
-        document.getElementById('gcBtn').href = "https://classroom.google.com";
-        document.getElementById('delimaBtn').href = "https://delima.moe-dl.edu.my";
-      }
+      // Pautan terus selamat
+      document.getElementById('delimaBtn').href = "https://delima.moe-dl.edu.my";
+      document.getElementById('gcBtn').href = "https://classroom.google.com";
     }
 
     function copyEmail() {
       const emailText = document.getElementById('dashDelimaEmail').innerText;
       if (emailText && emailText !== 'Tiada E-mel Berdaftar') {
         navigator.clipboard.writeText(emailText).then(() => {
-          alert('📋 E-mel DELIMa berjaya disalin!\n' + emailText);
+          alert('📋 E-mel DELIMa berjaya disalin!\n\n' + emailText);
         }).catch(() => {
           alert('E-mel DELIMa: ' + emailText);
         });
@@ -426,7 +429,7 @@
     }
 
     function deleteStudent(id) {
-      if (confirm('Padam profil murid ini?')) {
+      if (confirm('Adakah anda pasti ingin memadam profil murid ini?')) {
         students = students.filter(s => s.id !== id);
         saveStudents();
         renderProfiles();
