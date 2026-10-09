@@ -51,7 +51,7 @@
 
     .mobile-tip-box { background: #fffbebfb; border: 1.5px solid #fde68a; padding: 12px 16px; border-radius: 14px; font-size: 13px; color: #92400e; margin-bottom: 24px; text-align: left; line-height: 1.5; }
 
-    /* Main Apps Grid - 2 Apps Only */
+    /* Main Apps Grid */
     .main-apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
     .main-app-card { background: white; border-radius: 24px; padding: 36px 28px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.04); border: 2px solid #e2e8f0; transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; }
     .main-app-card:hover { transform: translateY(-6px); box-shadow: 0 18px 35px rgba(0,0,0,0.08); border-color: #2563eb; }
@@ -221,7 +221,7 @@
       <div id="parentAuthSection">
         <div class="form-group">
           <label>PIN Pentadbir (Lalai: 1234):</label>
-          <input type="password" id="parentPinInput" class="form-input" placeholder="••••" maxlength="4">
+          <input type="password" id="parentPinInput" class="form-input" placeholder="••••" maxlength="4" onkeyup="if(event.key==='Enter') verifyParentPin()">
         </div>
         <button onclick="verifyParentPin()" class="btn btn-primary" style="width: 100%;">Log Masuk Pentadbir</button>
       </div>
@@ -267,7 +267,6 @@
   </div>
 
   <script>
-    // Data Asal Contoh
     const defaultStudents = [
       { id: 1, name: 'Aina', email: 'm-10293847@moe-dl.edu.my', pin: '1234', icon: '🐱', color: '#fbcfe8' },
       { id: 2, name: 'Adam', email: 'm-56473829@moe-dl.edu.my', pin: '5678', icon: '🤖', color: '#bfdbfe' },
@@ -314,7 +313,7 @@
         updatePinDisplay();
       }
       if (enteredPin.length === 4) {
-        setTimeout(submitPin, 200);
+        setTimeout(submitPin, 150);
       }
     }
 
@@ -328,6 +327,7 @@
     }
 
     function submitPin() {
+      if (!selectedStudent) return;
       if (enteredPin === selectedStudent.pin) {
         closeModal('studentPinModal');
         openDashboard(selectedStudent);
@@ -349,7 +349,6 @@
       document.getElementById('dashGreeting').innerText = 'Selamat Belajar, ' + student.name + '! ' + (student.icon || '👋');
       document.getElementById('dashDelimaEmail').innerText = student.email || 'Tiada E-mel Berdaftar';
 
-      // Pautan terus selamat
       document.getElementById('delimaBtn').href = "https://delima.moe-dl.edu.my";
       document.getElementById('gcBtn').href = "https://classroom.google.com";
     }
@@ -357,12 +356,31 @@
     function copyEmail() {
       const emailText = document.getElementById('dashDelimaEmail').innerText;
       if (emailText && emailText !== 'Tiada E-mel Berdaftar') {
-        navigator.clipboard.writeText(emailText).then(() => {
-          alert('📋 E-mel DELIMa berjaya disalin!\n\n' + emailText);
-        }).catch(() => {
-          alert('E-mel DELIMa: ' + emailText);
-        });
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(emailText).then(() => {
+            alert('📋 E-mel DELIMa berjaya disalin!\n\n' + emailText);
+          }).catch(() => {
+            fallbackCopyText(emailText);
+          });
+        } else {
+          fallbackCopyText(emailText);
+        }
       }
+    }
+
+    function fallbackCopyText(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('📋 E-mel DELIMa berjaya disalin!\n\n' + text);
+      } catch (err) {
+        prompt("Sila salin e-mel ini secara manual:", text);
+      }
+      document.body.removeChild(textArea);
     }
 
     function logoutStudent() {
@@ -406,6 +424,11 @@
         return;
       }
 
+      if (pin.length !== 4 || isNaN(pin)) {
+        alert('PIN mesti mengandungi 4 digit nombor!');
+        return;
+      }
+
       const colors = ['#fbcfe8', '#bfdbfe', '#bbf7d0', '#fef08a', '#e9d5ff'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -430,6 +453,9 @@
 
     function deleteStudent(id) {
       if (confirm('Adakah anda pasti ingin memadam profil murid ini?')) {
+        if (selectedStudent && selectedStudent.id === id) {
+          logoutStudent();
+        }
         students = students.filter(s => s.id !== id);
         saveStudents();
         renderProfiles();
@@ -463,3 +489,4 @@
   </script>
 </body>
 </html>
+  
